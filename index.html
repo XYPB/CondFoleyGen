@@ -131,9 +131,12 @@
             <td width=100%>
                 <center> 
                     <!--  height="480" -->
-                    <video width="1000" autoplay loop muted playsinline>
+                    <video width="1000" autoplay loop muted playsinline id="method">
                         <source src="images/sampling.mp4" type="video/mp4" />
                     </video>
+                    <script>
+                        document.getElementById("method").playbackRate = 1.5;
+                    </script>
                     <br>
                 </center>
             </td>
