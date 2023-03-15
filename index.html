@@ -1,0 +1,546 @@
+<script src="http://www.google.com/jsapi" type="text/javascript"></script> 
+<script type="text/javascript">google.load("jquery", "1.3.2");</script>
+
+<html>
+<head>
+    <title>Conditional Generation of Audio from Video via Foley Analogies</title>
+    <!-- <meta property="og:image" content=images/teaser.png"/> Facebook automatically scrapes this. Go to https://developers.facebook.com/tools/debug/ if you update and want to force Facebook to rescrape. -->
+    <meta property="og:title" content="Conditional Generation of Audio from Video via Foley Analogies" />
+    <meta property="og:description" content="Y. Du, Z. Chen, J. Salamon, B. Russell A. Owens." />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- webpage template-->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- model-viewer css -->
+    <link rel="stylesheet" href="assets/css/demo-style.css">
+
+</head>
+
+<body>
+    <br>
+    <!-- <center> -->
+    <center>
+        <span style="font-size:38px">Conditional Generation of Audio from Video via Foley Analogies</span>
+    </center>
+    <br><br>
+    <table align=center width=80%>
+        <tr>
+            <td align=center width=20%>
+                <center>
+                    <span style="font-size:20px"><a href="https://xypb.github.io/">Yuexi Du</a><sup>1,2</sup></span>
+                </center>
+            </td>
+            <td align=center width=20%>
+                <center>
+                    <span style="font-size:20px"><a href="https://ificl.github.io/">Ziyang Chen </a><sup>1</sup></span>
+                </center>
+            </td>
+            <td align=center width=20%>
+                <center>
+                    <span style="font-size:20px"><a href="https://www.justinsalamon.com/">Justin Salamon </a><sup>3</sup></span>
+                </center>
+            </td>
+            <td align=center width=20%>
+                <center>
+                    <span style="font-size:20px"><a href="https://bryanrussell.org/">Bryan Russell </a><sup>3</sup></span>
+                </center>
+            </td>
+            <td align=center width=20%>
+                <center>
+                    <span style="font-size:20px"><a href="http://andrewowens.com/">Andrew Owens</a><sup>1</sup></span>
+                </center>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table align=center width=60%>
+        <tr>
+            <td align=center width=33%>
+                <center>
+                    <span style="font-size:20px">University of Michigan<sup>1</sup></span>
+                </center>
+            </td>
+            <td align=center width=33%>
+                <center>
+                    <span style="font-size:20px">Yale University<sup>2</sup></span>
+                </center>
+            </td>
+            <td align=center width=33%>
+                <center>
+                    <span style="font-size:20px">Adobe Research<sup>3</sup></span>
+                </center>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table align=center width=60%>
+        <tr>
+            <td align=center width=100%>
+                <center>
+                    <span style="font-size:20px">CVPR 2023</span>
+                </center>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table align=center width=60%>
+        <tr>
+            <td align=center width=50%>
+                <center>
+                    <span style="font-size:20px"><a href="TBD">[Paper]</a></span>
+                </center>
+            </td>
+            <td align=center width=50%>
+                <center>
+                    <span style="font-size:20px"><a href="https://github.com/XYPB/CondFoleyGen">[Github]</a></span>
+                </center>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <table align=center width=80%>
+        <tr>
+            <td width=100%>
+                <center>
+                    <img src="images/teaser_cxav_step.png" width="100%"></img><br>
+                </center>
+            </td>
+        </tr>
+        <tr>
+        <td width=95%>
+            <center>
+                <span style="font-size:14px"><i> 
+                    We generate a soundtrack for a silent input video, given a user-provided conditional example specifying what its audio should "sound like." In the first example, we make the footsteps on a muddy gravel path sound like they were produced by stepping on wood. In the second example, we generate a soundtrack for a video in which the drumstick striking a wooden door sounds as though it were made of metal. Notice that the shape of the sound events in the generated audio (e.g., thin stripes in the top example) matches the conditional audio and the onsets match the input example's audio. For reference, we provide the input video's (held out) sound on the right.</i>
+            </center>
+        </td>
+        </tr>
+    </table>
+    <br>
+    <hr>
+
+    <table align=center width=80%>
+        <center><h1>Abstract</h1></center>
+        <tr>
+            <td>
+                The sound effects that designers add to videos are designed to convey a particular artistic effect and, thus, may be quite different from a scene's true sound. Inspired by the challenges of creating a soundtrack for a video that differs from its true sound, but that nonetheless matches the actions occurring on screen, we propose the problem of <i><b>conditional Foley</b></i>. We present the following contributions to address this problem. First, we propose a pretext task for training our model to predict sound for an input video clip using a conditional audio-visual clip sampled from another time within the same source video. Second, we propose a model for generating a soundtrack for a silent input video, given a user-supplied example that specifies what the video should ``sound like''. We show through human studies and automated evaluation metrics that our model successfully generates sound from video, while varying its output according to the content of a supplied example.
+            </td>
+        </tr>
+        <tr>
+            <td width=100%>
+                <center> 
+                    <!--  height="480" -->
+                    <video width="1000" autoplay loop muted playsinline>
+                        <source src="images/sampling.mp4" type="video/mp4" />
+                    </video>
+                    <br>
+                </center>
+            </td>
+        </tr>
+    </table>
+    <br><br>
+    <hr>
+
+
+    <!-- <table align=center width=100%>
+        <center>
+            <h1>Examples</h1>
+        </center>
+        <div>
+            <p align="center">
+            <iframe style="width: 70%; height: 50%; min-width:300px" src="https://www.youtube.com/embed/vKlN1vxJtLg" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </p>
+        </div>
+    </table>
+    <br><br>
+    <hr> -->
+
+    <table align=center width=90%>
+        <center>
+            <h1>Qualitative Results</h1>
+        </center>
+        <center>
+            <h2><i>GreatestHits</i> Dataset</h2>
+        </center>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+            <tr>
+                <th></th>
+                <th align="center">Input Video</th>
+                <th align="center">Conditional Video</th>
+                <th align="center">Input Video w/ Generated Audio</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row"><i>Spec #1.</i></th>
+                <td><img src="generated_videos\orig\2015-10-02-12-13-59-83_denoised_trim_to_2s_from_22.1333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\cond\2015-10-02-12-13-59-83_denoised_trim_to_2s_from_22.1333_new_fps_resized_to_2015-03-29-17-29-56_denoised_trim_to_2s_from_7.9333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\generated\2015-10-02-12-13-59-83_denoised_trim_to_2s_from_22.1333_new_fps_resized_to_2015-03-29-17-29-56_denoised_trim_to_2s_from_7.9333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr>
+                <th scope="row"><i>Video #1</i></th>
+                <td><video controls width="320" height="180"><source src="generated_videos\orig\orig2_30fps_rec_audio.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\cond\cond2_rec_audio_30fps.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\generated\gen2_30fps.mp4" type="video/mp4" preload="none"></video></td>
+            </tr>
+            </tbody>
+            <tbody><tr>
+                <th><br></th>
+                <td><br></td>
+                <td><br></td>
+                <td><br></td>
+            </tr></tbody>
+            <tbody>
+                <tr>
+                    <th scope="row"><i>Spec #2.</i></th>
+                    <td><img src="generated_videos\orig\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+                    <td><img src="generated_videos\cond\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+                    <td><img src="generated_videos\generated\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_coolwarm_.jpg" width="320" height="180"></td>
+                </tr>
+                </tbody>
+                <tbody>
+                <tr>
+                    <th scope="row"><i>Video #2</i></th>
+                    <td><video controls width="320" height="180"><source src="generated_videos\orig\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video></td>
+                    <td><video controls width="320" height="180"><source src="generated_videos\cond\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video></td>
+                    <td><video controls width="320" height="180"><source src="generated_videos\generated\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video></td>
+                </tr>
+                </tbody>
+        </table>
+        <br>
+
+        <center>
+            <h2><i>In-the-wild</i> Videos</h2>
+            <i>*generated with model trained on the CountixAV dataset</i>
+        </center>
+        <table style="width: 100%;">
+            <thead>
+            <tr>
+                <th></th>
+                <th align="center">Input Video</th>
+                <th align="center">Conditional Video</th>
+                <th align="center">Input Video w/ Generated Audio</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row"><i>Spec #1.</i></th>
+                <td><img src="generated_videos\orig\tennis_orig.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\cond\cond2.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\generated\generated2.jpg" width="320" height="180"></td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr>
+                <th scope="row"><i>Video #1</i></th>
+                <td><video controls width="320" height="180"><source src="generated_videos\orig\tennis_orig.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\cond\cond2.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\generated\generated2.mp4" type="video/mp4" preload="none"></video></td>
+            </tr>
+            </tbody>
+            <tbody><tr>
+                <th><br></th>
+                <td><br></td>
+                <td><br></td>
+                <td><br></td>
+            </tr></tbody>
+            <tbody>
+                <tr>
+                    <th scope="row"><i>Spec #2.</i></th>
+                    <td><img src="generated_videos\orig\chopping_orig.jpg" width="320" height="180"></td>
+                    <td><img src="generated_videos\cond\cond3.jpg" width="320" height="180"></td>
+                    <td><img src="generated_videos\generated\generated3.jpg" width="320" height="180"></td>
+                </tr>
+                </tbody>
+                <tbody>
+                <tr>
+                    <th scope="row"><i>Video #2</i></th>
+                    <td><video controls width="320" height="180"><source src="generated_videos\orig\chopping_orig.mp4" type="video/mp4" preload="none"></video></td>
+                    <td><video controls width="320" height="180"><source src="generated_videos\cond\cond3.mp4" type="video/mp4" preload="none"></video></td>
+                    <td><video controls width="320" height="180"><source src="generated_videos\generated\generated3.mp4" type="video/mp4" preload="none"></video></td>
+                </tr>
+                </tbody>
+        </table>
+        <br>
+
+    </table>
+    <br><br>
+    <hr>
+
+    <table align=center width=90%>
+        <center>
+            <h1>Effect of using different conditional video</h1>
+        </center>
+        <center>
+            <h2><i>GreatestHits</i> Dataset</h2>
+        </center>
+        <!-- <table style="width: 100%;">
+            <thead>
+            <tr>
+                <th></th>
+                <th align="center">Input Video</th>
+                <th align="center">Conditional Video</th>
+                <th align="center">Input Video w/ Generated Audio</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row"><i>Spec #1.</i></th>
+                <td><img src="generated_videos\orig\2015-10-02-12-13-59-83_denoised_trim_to_2s_from_22.1333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\cond\2015-10-02-12-13-59-83_denoised_trim_to_2s_from_22.1333_new_fps_resized_to_2015-03-29-17-29-56_denoised_trim_to_2s_from_7.9333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\generated\2015-10-02-12-13-59-83_denoised_trim_to_2s_from_22.1333_new_fps_resized_to_2015-03-29-17-29-56_denoised_trim_to_2s_from_7.9333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr>
+                <th scope="row"><i>Video #1</i></th>
+                <td><video controls width="320" height="180"><source src="generated_videos\orig\orig2_30fps_rec_audio.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\cond\cond2_rec_audio_30fps.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\generated\gen2_30fps.mp4" type="video/mp4" preload="none"></video></td>
+            </tr>
+            </tbody>
+            <tbody><tr>
+                <th><br></th>
+                <td><br></td>
+                <td><br></td>
+                <td><br></td>
+            </tr></tbody>
+            <tbody>
+                <tr>
+                    <th scope="row"><i>Spec #2.</i></th>
+                    <td><img src="generated_videos\orig\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+                    <td><img src="generated_videos\cond\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+                    <td><img src="generated_videos\generated\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_coolwarm_.jpg" width="320" height="180"></td>
+                </tr>
+                </tbody>
+                <tbody>
+                <tr>
+                    <th scope="row"><i>Video #2</i></th>
+                    <td><video controls width="320" height="180"><source src="generated_videos\orig\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video></td>
+                    <td><video controls width="320" height="180"><source src="generated_videos\cond\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video></td>
+                    <td><video controls width="320" height="180"><source src="generated_videos\generated\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video></td>
+                </tr>
+                </tbody>
+        </table> -->
+        <br>
+
+        <center>
+            <h2><i>In-the-wild</i> Videos</h2>
+            <i>*generated with model trained on the CountixAV dataset</i>
+        </center>
+        <!-- <table style="width: 100%;">
+            <thead>
+            <tr>
+                <th></th>
+                <th align="center">Input Video</th>
+                <th align="center">Conditional Video</th>
+                <th align="center">Input Video w/ Generated Audio</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row"><i>Spec #1.</i></th>
+                <td><img src="generated_videos\orig\tennis_orig.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\cond\cond1.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\generated\generated1.jpg" width="320" height="180"></td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr>
+                <th scope="row"><i>Video #1</i></th>
+                <td><video controls width="320" height="180"><source src="generated_videos\orig\tennis_orig.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\cond\cond1.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\generated\generated1.mp4" type="video/mp4" preload="none"></video></td>
+            </tr>
+            </tbody>
+            <tbody><tr>
+                <th><br></th>
+                <td><br></td>
+                <td><br></td>
+                <td><br></td>
+            </tr></tbody>
+            <tbody>
+                <tr>
+                    <th scope="row"><i>Spec #2.</i></th>
+                    <td><img src="generated_videos\orig\chopping_orig.jpg" width="320" height="180"></td>
+                    <td><img src="generated_videos\cond\cond3.jpg" width="320" height="180"></td>
+                    <td><img src="generated_videos\generated\generated3.jpg" width="320" height="180"></td>
+                </tr>
+                </tbody>
+                <tbody>
+                <tr>
+                    <th scope="row"><i>Video #2</i></th>
+                    <td><video controls width="320" height="180"><source src="generated_videos\orig\chopping_orig.mp4" type="video/mp4" preload="none"></video></td>
+                    <td><video controls width="320" height="180"><source src="generated_videos\cond\cond3.mp4" type="video/mp4" preload="none"></video></td>
+                    <td><video controls width="320" height="180"><source src="generated_videos\generated\generated3.mp4" type="video/mp4" preload="none"></video></td>
+                </tr>
+                </tbody>
+        </table> -->
+        <br>
+
+    </table>
+    <br><br>
+    <hr>
+
+    <table align=center width=90%>
+        <center>
+            <h1>Generation with longer durations</h1>
+        </center>
+        <center>
+            <h2><i>GreatestHits</i> Dataset</h2>
+        </center>
+        <!-- <table style="width: 100%;">
+            <thead>
+            <tr>
+                <th></th>
+                <th align="center">Input Video</th>
+                <th align="center">Conditional Video</th>
+                <th align="center">Input Video w/ Generated Audio</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row"><i>Spec #1.</i></th>
+                <td><img src="generated_videos\orig\2015-10-02-12-13-59-83_denoised_trim_to_2s_from_22.1333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\cond\2015-10-02-12-13-59-83_denoised_trim_to_2s_from_22.1333_new_fps_resized_to_2015-03-29-17-29-56_denoised_trim_to_2s_from_7.9333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\generated\2015-10-02-12-13-59-83_denoised_trim_to_2s_from_22.1333_new_fps_resized_to_2015-03-29-17-29-56_denoised_trim_to_2s_from_7.9333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr>
+                <th scope="row"><i>Video #1</i></th>
+                <td><video controls width="320" height="180"><source src="generated_videos\orig\orig2_30fps_rec_audio.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\cond\cond2_rec_audio_30fps.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\generated\gen2_30fps.mp4" type="video/mp4" preload="none"></video></td>
+            </tr>
+            </tbody>
+            <tbody><tr>
+                <th><br></th>
+                <td><br></td>
+                <td><br></td>
+                <td><br></td>
+            </tr></tbody>
+            <tbody>
+                <tr>
+                    <th scope="row"><i>Spec #2.</i></th>
+                    <td><img src="generated_videos\orig\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+                    <td><img src="generated_videos\cond\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
+                    <td><img src="generated_videos\generated\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_coolwarm_.jpg" width="320" height="180"></td>
+                </tr>
+                </tbody>
+                <tbody>
+                <tr>
+                    <th scope="row"><i>Video #2</i></th>
+                    <td><video controls width="320" height="180"><source src="generated_videos\orig\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video></td>
+                    <td><video controls width="320" height="180"><source src="generated_videos\cond\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video></td>
+                    <td><video controls width="320" height="180"><source src="generated_videos\generated\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video></td>
+                </tr>
+                </tbody>
+        </table> -->
+        <br>
+
+        <center>
+            <h2><i>In-the-wild</i> Videos</h2>
+            <i>*generated with model trained on the CountixAV dataset</i>
+        </center>
+        <!-- <table style="width: 100%;">
+            <thead>
+            <tr>
+                <th></th>
+                <th align="center">Input Video</th>
+                <th align="center">Conditional Video</th>
+                <th align="center">Input Video w/ Generated Audio</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row"><i>Spec #1.</i></th>
+                <td><img src="generated_videos\orig\tennis_orig.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\cond\cond1.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\generated\generated1.jpg" width="320" height="180"></td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr>
+                <th scope="row"><i>Video #1</i></th>
+                <td><video controls width="320" height="180"><source src="generated_videos\orig\tennis_orig.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\cond\cond1.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\generated\generated1.mp4" type="video/mp4" preload="none"></video></td>
+            </tr>
+            </tbody>
+            <tbody><tr>
+                <th><br></th>
+                <td><br></td>
+                <td><br></td>
+                <td><br></td>
+            </tr></tbody>
+            <tbody>
+                <tr>
+                    <th scope="row"><i>Spec #2.</i></th>
+                    <td><img src="generated_videos\orig\chopping_orig.jpg" width="320" height="180"></td>
+                    <td><img src="generated_videos\cond\cond3.jpg" width="320" height="180"></td>
+                    <td><img src="generated_videos\generated\generated3.jpg" width="320" height="180"></td>
+                </tr>
+                </tbody>
+                <tbody>
+                <tr>
+                    <th scope="row"><i>Video #2</i></th>
+                    <td><video controls width="320" height="180"><source src="generated_videos\orig\chopping_orig.mp4" type="video/mp4" preload="none"></video></td>
+                    <td><video controls width="320" height="180"><source src="generated_videos\cond\cond3.mp4" type="video/mp4" preload="none"></video></td>
+                    <td><video controls width="320" height="180"><source src="generated_videos\generated\generated3.mp4" type="video/mp4" preload="none"></video></td>
+                </tr>
+                </tbody>
+        </table> -->
+        <br>
+
+    </table>
+    <br><br>
+    <hr>
+
+
+    <table align=center width=60%>
+        <center><h1>Paper and Supplementary Material</h1></center>
+        <tr>
+            <td><a href=""><img class="layered-paper-big" style="height:175px" src="./images/paper.png"/></a></td>
+            <td><span style="font-size:14pt">Yuexi Du, Ziyang Chen, Justin Salamon, Bryan Russell, Andrew Owens.<br>
+                <b>Conditional Generation of Audio from Video via Foley Analogies.</b><br>
+                arXiv 2023.<br>
+                <!-- (hosted on <a href="#">ArXiv</a>)<br> -->
+                (<a href="TBD">Arxiv</a>)<br>
+                <span style="font-size:4pt"><a href=""><br></a>
+                </span>
+            </td>
+        </tr>
+    </table>
+    <br>
+
+    <table align=center width=60%>
+        <tr>
+            <td><span style="font-size:14pt"><center>
+                <a href="./docs/bibtex.txt">[Bibtex]</a>
+            </center></td>
+        </tr>
+    </table>
+
+    <hr>
+    <br>
+
+    <table align=center width=80%>
+        <tr>
+            <td width=80%>
+                <left>
+                    <center><h1>Acknowledgements</h1></center>
+                    We thank Jon Gillick, Daniel Geng, and Chao Feng for the helpful discussions. This work was funded in part by DARPA Semafor and Cisco Systems, and by a gift from Adobe. The views, opinions and/or findings expressed are those of the authors and should not be interpreted as representing the official views or policies of the Department of Defense or the U.S. Government. The webpage template was originally made by <a href="http://web.mit.edu/phillipi/">Phillip Isola</a> and <a href="http://richzhang.github.io/">Richard Zhang</a> for a <a href="http://richzhang.github.io/colorization/">Colorization</a> project. 
+                </left>
+            </td>
+        </tr>
+    </table>
+
+<br>
+</body>
+</html>
