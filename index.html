@@ -1,6 +1,48 @@
 <script src="http://www.google.com/jsapi" type="text/javascript"></script> 
 <script type="text/javascript">google.load("jquery", "1.3.2");</script>
 
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'UA-75863369-7');
+var slideIndex = [1,1,1,1,1,1,1];
+var slideId = ["mySlides0", "mySlides1","mySlides2","mySlides3","mySlides4","mySlides5","mySlides6"]
+var dotId=["dot0","dot1",'dot2',"dot3","dot4","dot5","dot6"]
+showSlides(1,0);
+showSlides(1,1);
+showSlides(1,2);
+showSlides(1,3);
+showSlides(1,4);
+showSlides(1,5);
+showSlides(1,6);
+function plusSlides(n,i) {
+    showSlides(slideIndex[i] += n,i);
+}
+
+function currentSlide(n,i) {
+    showSlides(slideIndex[i] = n,i);
+}
+
+function showSlides(n,idx) {
+    var i;
+    var slides = document.getElementsByClassName(slideId[idx]);
+    var dots = document.getElementsByClassName(dotId[idx]);
+    if (n > slides.length) {slideIndex[idx] = 1}    
+    if (n < 1) {slideIndex[idx] = slides.length}
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";  
+    }
+    for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex[idx]-1].style.display = "block";  
+    dots[slideIndex[idx]-1].className += " active";
+}
+
+</script>
+
 <html>
 <head>
     <title>Conditional Generation of Audio from Video via Foley Analogies</title>
@@ -233,17 +275,17 @@
             <tbody>
             <tr>
                 <th scope="row"><i>Spec. #1</i></th>
-                <td><img src="generated_videos\orig\tennis_orig.jpg" width="320" height="180"></td>
-                <td><img src="generated_videos\cond\cond2.jpg" width="320" height="180"></td>
-                <td><img src="generated_videos\generated\generated2.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\orig\AdobeStock_93378558_Video_HD_Preview_new_fps_trim_to_2s_from_2.5000.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\cond\AdobeStock_93378558_Video_HD_Preview_new_fps_trim_to_2s_from_2.5000_to_AdobeStock_99378579_Video_HD_Preview_new_fps_trim_to_2s_from_1.5000.jpg" width="320" height="180"></td>
+                <td><img src="generated_videos\generated\AdobeStock_93378558_Video_HD_Preview_new_fps_trim_to_2s_from_2.5000_to_AdobeStock_99378579_Video_HD_Preview_new_fps_trim_to_2s_from_1.5000.jpg" width="320" height="180"></td>
             </tr>
             </tbody>
             <tbody>
             <tr>
                 <th scope="row"><i>Video #1</i></th>
-                <td><video controls width="320" height="180"><source src="generated_videos\orig\tennis_orig.mp4" type="video/mp4" preload="none"></video></td>
-                <td><video controls width="320" height="180"><source src="generated_videos\cond\cond2.mp4" type="video/mp4" preload="none"></video></td>
-                <td><video controls width="320" height="180"><source src="generated_videos\generated\generated2.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\orig\AdobeStock_93378558_Video_HD_Preview_new_fps_trim_to_2s_from_2.5000.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\cond\AdobeStock_93378558_Video_HD_Preview_new_fps_trim_to_2s_from_2.5000_to_AdobeStock_99378579_Video_HD_Preview_new_fps_trim_to_2s_from_1.5000.mp4" type="video/mp4" preload="none"></video></td>
+                <td><video controls width="320" height="180"><source src="generated_videos\generated\AdobeStock_93378558_Video_HD_Preview_new_fps_trim_to_2s_from_2.5000_to_AdobeStock_99378579_Video_HD_Preview_new_fps_trim_to_2s_from_1.5000.mp4" type="video/mp4" preload="none"></video></td>
             </tr>
             </tbody>
             <tbody><tr>
@@ -275,115 +317,164 @@
     <br><br>
     <hr>
 
-    <table align=center width=90%>
+    <table align=center width=100%>
         <center>
-            <h1>Effect of using different conditional video</h1>
+            <h1>Generation using different conditional video</h1>
         </center>
         <center>
             <h2><i>GreatestHits</i> Dataset</h2>
         </center>
-        <table style="width: 100%;">
-            <thead>
-            <tr>
-                <th></th>
-                <th align="center">Input Video</th>
-                <th align="center">Conditional Video</th>
-                <th align="center">Input Video w/ Generated Audio</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row"><i>Spec. #1</i></th>
-                <td><img src="generated_videos\orig\2015-10-02-12-13-59-83_denoised_trim_to_2s_from_22.1333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
-                <td><img src="generated_videos\cond\2015-10-02-12-13-59-83_denoised_trim_to_2s_from_22.1333_new_fps_resized_to_2015-03-29-17-29-56_denoised_trim_to_2s_from_7.9333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
-                <td><img src="generated_videos\generated\2015-10-02-12-13-59-83_denoised_trim_to_2s_from_22.1333_new_fps_resized_to_2015-03-29-17-29-56_denoised_trim_to_2s_from_7.9333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
-            </tr>
-            </tbody>
-            <tbody>
-            <tr>
-                <th scope="row"><i>Video #1</i></th>
-                <td><video controls width="320" height="180"><source src="generated_videos\orig\orig2_30fps_rec_audio.mp4" type="video/mp4" preload="none"></video></td>
-                <td><video controls width="320" height="180"><source src="generated_videos\cond\cond2_rec_audio_30fps.mp4" type="video/mp4" preload="none"></video></td>
-                <td><video controls width="320" height="180"><source src="generated_videos\generated\gen2_30fps.mp4" type="video/mp4" preload="none"></video></td>
-            </tr>
-            </tbody>
-            <tbody><tr>
-                <th><br></th>
-                <td><br></td>
-                <td><br></td>
-                <td><br></td>
-            </tr></tbody>
-            <tbody>
-                <tr>
-                    <th scope="row"><i>Spec #2.</i></th>
-                    <td><img src="generated_videos\orig\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
-                    <td><img src="generated_videos\cond\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_coolwarm.jpg" width="320" height="180"></td>
-                    <td><img src="generated_videos\generated\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_coolwarm_.jpg" width="320" height="180"></td>
-                </tr>
-                </tbody>
-                <tbody>
-                <tr>
-                    <th scope="row"><i>Video #2</i></th>
-                    <td><video controls width="320" height="180"><source src="generated_videos\orig\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video></td>
-                    <td><video controls width="320" height="180"><source src="generated_videos\cond\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video></td>
-                    <td><video controls width="320" height="180"><source src="generated_videos\generated\2015-02-21-17-09-17_denoised_trim_to_2s_from_5.1333_new_fps_resized_to_2015-02-23-20-12-38_denoised_trim_to_2s_from_2.1333_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video></td>
-                </tr>
-                </tbody>
-        </table>
+
+        <div class="slideshow-container">
+            <div class="mySlides0 fade" style="display: none;">
+            <center>
+            <div class="numbertext">Condition: 1 / 2</div>
+            <div class="vstackimg" style="display: inline-block">
+                <center>
+                    Input Video
+                    <br>
+                    <img src="generated_videos\14-ylc\2015-09-29-16-17-33-365_denoised_trim_to_2s_from_10.1333_new_fps_resized_to_2015-03-20-01-23-48_denoised_trim_to_2s_from_11.8667_new_fps_resized_coolwarm.jpg" width="288" height="162">
+                    <video controls width="288" height="162"><source src="generated_videos\14-ylc\2015-09-29-16-17-33-365_denoised_trim_to_2s_from_10.1333_new_fps_resized_to_2015-03-20-01-23-48_denoised_trim_to_2s_from_11.8667_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video>
+                </center>
+            </div> &nbsp;
+            <div class="vstackimg" style="display: inline-block">
+                <center>
+                    Conditional Video
+                    <br>
+                    <img src="generated_videos\14-ylc\cond\2015-09-29-16-17-33-365_denoised_trim_to_2s_from_10.1333_new_fps_resized_to_2015-03-20-01-23-48_denoised_trim_to_2s_from_11.8667_new_fps_resized_converted_coolwarm.jpg" width="288" height="162">
+                    <video controls width="288" height="162"><source src="generated_videos\14-ylc\cond\2015-09-29-16-17-33-365_denoised_trim_to_2s_from_10.1333_new_fps_resized_to_2015-03-20-01-23-48_denoised_trim_to_2s_from_11.8667_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video>
+                </center>
+            </div> &nbsp;
+            <div class="vstackimg" style="display: inline-block">
+                <center>
+                    Input Video w/ Generated Audio
+                    <br>
+                    <img src="generated_videos\14-ylc\gen\2015-09-29-16-17-33-365_denoised_trim_to_2s_from_10.1333_new_fps_resized_to_2015-03-20-01-23-48_denoised_trim_to_2s_from_11.8667_new_fps_resized_converted_coolwarm.jpg" width="288" height="162">
+                    <video controls width="288" height="162"><source src="generated_videos\14-ylc\gen\2015-09-29-16-17-33-365_denoised_trim_to_2s_from_10.1333_new_fps_resized_to_2015-03-20-01-23-48_denoised_trim_to_2s_from_11.8667_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video>
+                </center>
+            </div> &nbsp;
+            </center>
+            </div>
+        
+        
+            <div class="mySlides0 fade" style="display: block;">
+            <center>
+                <div class="numbertext">Condition: 2 / 2</div>
+                <div class="vstackimg" style="display: inline-block">
+                    <center>
+                        Input Video
+                        <br>
+                        <img src="generated_videos\14-ylc\2015-09-29-16-17-33-365_denoised_trim_to_2s_from_10.1333_new_fps_resized_to_2015-03-20-01-23-48_denoised_trim_to_2s_from_11.8667_new_fps_resized_coolwarm.jpg" width="288" height="162">
+                        <video controls width="288" height="162"><source src="generated_videos\14-ylc\2015-09-29-16-17-33-365_denoised_trim_to_2s_from_10.1333_new_fps_resized_to_2015-03-20-01-23-48_denoised_trim_to_2s_from_11.8667_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video>
+                    </center>
+                </div> &nbsp;
+                <div class="vstackimg" style="display: inline-block">
+                    <center>
+                        Conditional Video
+                        <br>
+                        <img src="generated_videos\14-ylc\cond\2015-09-29-16-17-33-365_denoised_trim_to_2s_from_10.1333_new_fps_resized_to_2015-09-18-04-36-35-1059_denoised_trim_to_2s_from_14.6000_new_fps_resized_converted_coolwarm.jpg" width="288" height="162">
+                        <video controls width="288" height="162"><source src="generated_videos\14-ylc\cond\2015-09-29-16-17-33-365_denoised_trim_to_2s_from_10.1333_new_fps_resized_to_2015-09-18-04-36-35-1059_denoised_trim_to_2s_from_14.6000_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video>
+                    </center>
+                </div> &nbsp;
+                <div class="vstackimg" style="display: inline-block">
+                    <center>
+                        Input Video w/ Generated Audio
+                        <br>
+                        <img src="generated_videos\14-ylc\gen\2015-09-29-16-17-33-365_denoised_trim_to_2s_from_10.1333_new_fps_resized_to_2015-09-18-04-36-35-1059_denoised_trim_to_2s_from_14.6000_new_fps_resized_converted_coolwarm.jpg" width="288" height="162">
+                        <video controls width="288" height="162"><source src="generated_videos\14-ylc\gen\2015-09-29-16-17-33-365_denoised_trim_to_2s_from_10.1333_new_fps_resized_to_2015-09-18-04-36-35-1059_denoised_trim_to_2s_from_14.6000_new_fps_resized_converted.mp4" type="video/mp4" preload="none"></video>
+                    </center>
+                </div> &nbsp;
+            </center>
+            </div>
+        
+        <a class="prev" onclick="plusSlides(-1,0)">❮</a>
+        <a class="next" onclick="plusSlides(1,0)">❯</a>
+        
+        </div>
+        <br>
+        <div style="text-align:center">
+          Views:
+            <span class="dot0 dot" onmouseover="currentSlide(1,0)"></span>
+            <span class="dot0 dot active" onmouseover="currentSlide(2,0)"></span>
+        </div>
         <br>
 
         <center>
             <h2><i>In-the-wild</i> Videos</h2>
             <i>*generated with model trained on the CountixAV dataset</i>
         </center>
-        <!-- <table style="width: 100%;">
-            <thead>
-            <tr>
-                <th></th>
-                <th align="center">Input Video</th>
-                <th align="center">Conditional Video</th>
-                <th align="center">Input Video w/ Generated Audio</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row"><i>Spec. #1</i></th>
-                <td><img src="generated_videos\orig\tennis_orig.jpg" width="320" height="180"></td>
-                <td><img src="generated_videos\cond\cond1.jpg" width="320" height="180"></td>
-                <td><img src="generated_videos\generated\generated1.jpg" width="320" height="180"></td>
-            </tr>
-            </tbody>
-            <tbody>
-            <tr>
-                <th scope="row"><i>Video #1</i></th>
-                <td><video controls width="320" height="180"><source src="generated_videos\orig\tennis_orig.mp4" type="video/mp4" preload="none"></video></td>
-                <td><video controls width="320" height="180"><source src="generated_videos\cond\cond1.mp4" type="video/mp4" preload="none"></video></td>
-                <td><video controls width="320" height="180"><source src="generated_videos\generated\generated1.mp4" type="video/mp4" preload="none"></video></td>
-            </tr>
-            </tbody>
-            <tbody><tr>
-                <th><br></th>
-                <td><br></td>
-                <td><br></td>
-                <td><br></td>
-            </tr></tbody>
-            <tbody>
-                <tr>
-                    <th scope="row"><i>Spec #2.</i></th>
-                    <td><img src="generated_videos\orig\chopping_orig.jpg" width="320" height="180"></td>
-                    <td><img src="generated_videos\cond\cond3.jpg" width="320" height="180"></td>
-                    <td><img src="generated_videos\generated\generated3.jpg" width="320" height="180"></td>
-                </tr>
-                </tbody>
-                <tbody>
-                <tr>
-                    <th scope="row"><i>Video #2</i></th>
-                    <td><video controls width="320" height="180"><source src="generated_videos\orig\chopping_orig.mp4" type="video/mp4" preload="none"></video></td>
-                    <td><video controls width="320" height="180"><source src="generated_videos\cond\cond3.mp4" type="video/mp4" preload="none"></video></td>
-                    <td><video controls width="320" height="180"><source src="generated_videos\generated\generated3.mp4" type="video/mp4" preload="none"></video></td>
-                </tr>
-                </tbody>
-        </table> -->
+        <div class="slideshow-container">
+            <div class="mySlides1 fade" style="display: none;">
+            <center>
+            <div class="numbertext">Condition: 1 / 2</div>
+            <div class="vstackimg" style="display: inline-block">
+                <center>
+                    Input Video
+                    <br>
+                    <img src="generated_videos\orig\tennis_orig.jpg" width="288" height="162">
+                    <video controls width="288" height="162"><source src="generated_videos\orig\tennis_orig.mp4" type="video/mp4" preload="none"></video>
+                </center>
+            </div> &nbsp;
+            <div class="vstackimg" style="display: inline-block">
+                <center>
+                    Conditional Video
+                    <br>
+                    <img src="generated_videos\cond\cond1.jpg" width="288" height="162">
+                    <video controls width="288" height="162"><source src="generated_videos\cond\cond1.mp4" type="video/mp4" preload="none"></video>
+                </center>
+            </div> &nbsp;
+            <div class="vstackimg" style="display: inline-block">
+                <center>
+                    Input Video w/ Generated Audio
+                    <br>
+                    <img src="generated_videos\generated\generated1.jpg" width="288" height="162">
+                    <video controls width="288" height="162"><source src="generated_videos\generated\generated1.mp4" type="video/mp4" preload="none"></video>
+                </center>
+            </div> &nbsp;
+            </center>
+            </div>
+        
+        
+            <div class="mySlides1 fade" style="display: block;">
+            <center>
+                <div class="numbertext">Condition: 2 / 2</div>
+                <div class="vstackimg" style="display: inline-block">
+                    <center>
+                        Input Video
+                        <br>
+                        <img src="generated_videos\orig\tennis_orig.jpg" width="288" height="162">
+                        <video controls width="288" height="162"><source src="generated_videos\orig\tennis_orig.mp4" type="video/mp4" preload="none"></video>
+                    </center>
+                </div> &nbsp;
+                <div class="vstackimg" style="display: inline-block">
+                    <center>
+                        Conditional Video
+                        <br>
+                        <img src="generated_videos\cond\cond2.jpg" width="288" height="162">
+                        <video controls width="288" height="162"><source src="generated_videos\cond\cond2.mp4" type="video/mp4" preload="none"></video>
+                    </center>
+                </div> &nbsp;
+                <div class="vstackimg" style="display: inline-block">
+                    <center>
+                        Input Video w/ Generated Audio
+                        <br>
+                        <img src="generated_videos\generated\generated2.jpg" width="288" height="162">
+                        <video controls width="288" height="162"><source src="generated_videos\generated\generated2.mp4" type="video/mp4" preload="none"></video>
+                    </center>
+                </div> &nbsp;
+            </center>
+            </div>
+        
+        <a class="prev" onclick="plusSlides(-1,1)">❮</a>
+        <a class="next" onclick="plusSlides(1,1)">❯</a>
+        
+        </div>
+        <br>
+        <div style="text-align:center">
+          Views:
+            <span class="dot0 dot" onmouseover="currentSlide(1,1)"></span>
+            <span class="dot0 dot active" onmouseover="currentSlide(2,1)"></span>
+        </div>
         <br>
 
     </table>
