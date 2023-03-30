@@ -286,9 +286,31 @@ function showSlides(n,idx) {
             <br><br>
         </th>
 
+    </table>
+    <br><br>
+    <hr>
 
-        
 
+    <table align=center width=80%>
+        <center><h1>Inference-time Audio Re-ranking</h1></center>
+        <tr>
+            <td width=100%>
+                <center> 
+                    <video width="700" autoplay loop muted playsinline id="method">
+                        <source src="images/ranking_video_crop.mp4" type="video/mp4" />
+                    </video>
+                    <script>
+                        document.getElementById("method").playbackRate = 1.0;
+                    </script>
+                    <br>
+                </center>
+            </td>
+        </tr>
+        <tr>
+            <td style="font-size:18px">
+                inspired by other work in cross-model generation, we use <i>re-ranking</i> to improve our model's predictions. We generate a large number of sounds, the select the best one, as judged by a separate classifier. Instead of using a classifier that judges the multimodal agreement between the input and output, we propose to use an off-the-shelf audio-visual synchronization model to measure the temporal alignment between the predicted sound and the input video.
+            </td>
+        </tr>
     </table>
     <br><br>
     <hr>
