@@ -180,6 +180,11 @@ function showSlides(n,idx) {
     <table align=center width=80%>
         <center><h1>Learning from Foley Analogy</h1></center>
         <tr>
+            <td style="font-size:18px">
+                We propose a self-supervised pretext task for learning conditional Foley. Our pretext task exploits the fact that natural videos tend to contain repeated events that produce closely related sounds. During training, we randomly sample two pairs of audio-visual slips from a video, and the use one as the conditional example for the other. Our model then learns to infer the types of actions within the sene from the conditional example, and to generate analogous sounds to match the input example.
+            </td>
+        </tr>
+        <tr>
             <td width=100%>
                 <center> 
                     <video width="1000" autoplay loop muted playsinline id="method">
@@ -193,8 +198,8 @@ function showSlides(n,idx) {
             </td>
         </tr>
         <tr>
-            <td>
-                
+            <td style="font-size:18px">
+                Our proposed model is a GPT-like multi-modal transformer. We use a spectrogram VQ-GAN as the audio encoder, and a Res-Net (2+1D)-18 without temporal strading as the video encoder. The model learns to predict original input audio tokens autoregressively during training time. Our full model works by first generating a code using the transformer, converting it to a mel spectrogram using the decoder, then converting the mel spectrogram to a waveform using the pretrained MelGAN vocoder.
             </td>
         </tr>
     </table>
