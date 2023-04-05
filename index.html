@@ -169,7 +169,7 @@ function showSlides(n,idx) {
     <table align=center width=80%>
         <center><h1>Abstract</h1></center>
         <tr>
-            <td style="font-size:18px">
+            <td class="my-paragraph">
                 The sound effects that designers add to videos are designed to convey a particular artistic effect and, thus, may be quite different from a scene's true sound. Inspired by the challenges of creating a soundtrack for a video that differs from its true sound, but that nonetheless matches the actions occurring on screen, we propose the problem of <i><b>conditional Foley</b></i>. We present the following contributions to address this problem. First, we propose a pretext task for training our model to predict sound for an input video clip using a conditional audio-visual clip sampled from another time within the same source video. Second, we propose a model for generating a soundtrack for a silent input video, given a user-supplied example that specifies what the video should "sound like". We show through human studies and automated evaluation metrics that our model successfully generates sound from video, while varying its output according to the content of a supplied example.
             </td>
         </tr>
@@ -195,7 +195,7 @@ function showSlides(n,idx) {
     <table align=center width=80%>
         <center><h1>Learning from Foley Analogy</h1></center>
         <tr>
-            <td style="font-size:18px">
+            <td class="my-paragraph">
                 We propose a self-supervised pretext task for learning conditional Foley. Our pretext task exploits the fact that natural videos tend to contain repeated events that produce closely related sounds. During training, we randomly sample two pairs of audio-visual slips from a video, and the use one as the conditional example for the other. Our model then learns to infer the types of actions within the sene from the conditional example, and to generate analogous sounds to match the input example.
             </td>
         </tr>
@@ -213,7 +213,7 @@ function showSlides(n,idx) {
             </td>
         </tr>
         <tr>
-            <td style="font-size:18px">
+            <td class="my-paragraph">
                 Our model takes the silent input video and the conditional audio-visual example as input. It then autoregressively generates a spectrogram from an input videos using a VQ-GAN, then converts the sound to a waveform.
             </td>
         </tr>
@@ -236,7 +236,7 @@ function showSlides(n,idx) {
             </td>
         </tr>
         <tr>
-            <td width=100% style="font-size:18px">
+            <td width=100% class="my-paragraph">
                 inspired by other work in cross-model generation, we use <i>re-ranking</i> to improve our model's predictions. We generate a large number of sounds, the select the best one, as judged by a separate classifier. Instead of using a classifier that judges the multimodal agreement between the input and output, we propose to use an off-the-shelf audio-visual synchronization model to measure the temporal alignment between the predicted sound and the input video.
             </td>
         </tr>
