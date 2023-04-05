@@ -1,5 +1,5 @@
 body {
-    font-family: "Avenir-Light", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-family: "Avenir", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-weight: 300;
     font-size: 20px;
     margin-left: auto;
@@ -13,7 +13,7 @@ h1 {
 }
 
 .my-paragraph {
-    font-family: "Avenir-Light", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-family: "Avenir", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     margin-left: auto;
     margin-right: auto;
     font-size: 20px;
