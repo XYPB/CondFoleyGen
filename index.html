@@ -214,7 +214,7 @@ function showSlides(n,idx) {
         </tr>
         <tr>
             <td style="font-size:18px">
-                Our proposed model is a GPT-like multi-modal transformer. We use a spectrogram VQ-GAN as the audio encoder, and a Res-Net (2+1D)-18 without temporal strading as the video encoder. The model learns to predict original input audio tokens autoregressively during training time. Our full model works by first generating a code using the transformer, converting it to a mel spectrogram using the decoder, then converting the mel spectrogram to a waveform using the pretrained MelGAN vocoder.
+                Our model takes the silent input video and the conditional audio-visual example as input. It then autoregressively generates a spectrogram from an input videos using a VQ-GAN, then converts the sound to a waveform.
             </td>
         </tr>
     </table>
@@ -251,7 +251,7 @@ function showSlides(n,idx) {
         </center>
 
         <center>
-            <h2><i>In-the-wild</i> Videos</h2>
+            <h2><i>Internet</i> Videos</h2>
             <i style="font-size: 15px;">*generated with model trained on the CountixAV dataset</i>
             <br><br>
         </center>
@@ -264,7 +264,7 @@ function showSlides(n,idx) {
         <br><br>
 
         <center>
-            <h2><i>GreatestHits</i> Dataset Results</h2>
+            <h2><i>Greatest Hits</i> Dataset Results</h2>
         </center>
         <center> 
             <video width="750" controls width="750">
@@ -282,7 +282,7 @@ function showSlides(n,idx) {
 
         <th width="50%" text-align="center">
             <center>
-                <h2><i>In-the-wild</i> Videos</h2>
+                <h2><i>Internet</i> Videos</h2>
                 <i style="font-size: 15px;">*generated with model trained on the CountixAV dataset</i>
                 <!-- <br><br> -->
             </center>
@@ -296,7 +296,7 @@ function showSlides(n,idx) {
         </th>
         <th width="50%" text-align="center">
             <center>
-                <h2><i>GreatestHits</i> Dataset Results</h2>
+                <h2><i>Greatest Hits</i> Dataset Results</h2>
                 <i style="font-size: 15px;">&nbsp;</i>
                 <!-- <br><br> -->
             </center>
@@ -346,7 +346,7 @@ function showSlides(n,idx) {
             <td width=80%>
                 <left>
                     <center><h1>Acknowledgements</h1></center>
-                    We thank Jon Gillick, Daniel Geng, and Chao Feng for the helpful discussions. This work was funded in part by DARPA Semafor and Cisco Systems, and by a gift from Adobe. The views, opinions and/or findings expressed are those of the authors and should not be interpreted as representing the official views or policies of the Department of Defense or the U.S. Government. We credit the licensed videos that appears in the webpage and the demo video <a href="./docs/video_credit.txt">here</a> The webpage template was originally made by <a href="http://web.mit.edu/phillipi/">Phillip Isola</a> and <a href="http://richzhang.github.io/">Richard Zhang</a> for a <a href="http://richzhang.github.io/colorization/">Colorization</a> project. 
+                    We thank Jon Gillick, Daniel Geng, and Chao Feng for the helpful discussions. Our code base is developed upon two amazing projects proposed by Iashin <i>et.al,</i>, check those projects here ([<a href="https://iashin.ai/SpecVQGAN">SpecVQGAN</a>], [<a href="https://iashin.ai/SparseSync">SparseSync</a>]). This work was funded in part by DARPA Semafor and Cisco Systems, and by a gift from Adobe. The views, opinions and/or findings expressed are those of the authors and should not be interpreted as representing the official views or policies of the Department of Defense or the U.S. Government. We credit the licensed videos that appears in the webpage and the demo video <a href="./docs/video_credit.txt">here</a> The webpage template was originally made by <a href="http://web.mit.edu/phillipi/">Phillip Isola</a> and <a href="http://richzhang.github.io/">Richard Zhang</a> for a <a href="http://richzhang.github.io/colorization/">Colorization</a> project. 
                 </left>
             </td>
         </tr>
