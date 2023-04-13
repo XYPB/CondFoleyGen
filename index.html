@@ -157,6 +157,7 @@ function showSlides(n,idx) {
         <tr>
         <td width=95%>
             <center>
+                <br>
                 <span style="font-size:16px"><i> 
                     We generate a soundtrack for a silent input video, given a user-provided conditional example specifying what its audio should "sound like."</i>
             </center>
@@ -174,7 +175,7 @@ function showSlides(n,idx) {
             </td>
         </tr>
     </table>
-    <br><br>
+    <br>
     <hr>
 
     <table align=center width=100%>
@@ -218,7 +219,7 @@ function showSlides(n,idx) {
             </td>
         </tr>
     </table>
-    <br><br>
+    
 
     <table align=center width=80%>
         <center><h1>Inference-time Audio Re-ranking</h1></center>
@@ -237,7 +238,7 @@ function showSlides(n,idx) {
         </tr>
         <tr>
             <td width=100% class="my-paragraph">
-                inspired by other work in cross-model generation, we use <i>re-ranking</i> to improve our model's predictions. We generate a large number of sounds, the select the best one, as judged by a separate classifier. Instead of using a classifier that judges the multimodal agreement between the input and output, we propose to use an off-the-shelf audio-visual synchronization model to measure the temporal alignment between the predicted sound and the input video.
+                Inspired by other work in cross-model generation, we use <i>re-ranking</i> to improve our model's predictions. We generate a large number of sounds, the select the best one, as judged by a separate classifier. Instead of using a classifier that judges the multimodal agreement between the input and output, we propose to use an off-the-shelf audio-visual synchronization model to measure the temporal alignment between the predicted sound and the input video.
             </td>
         </tr>
     </table>
