@@ -1,4 +1,6 @@
 # CondFoleyGen
 Official PyTorch implementation of "Conditional Generation of Audio from Video via Foley Analogies".
 
-## Coming soon...
+[[Arxiv](https://xypb.github.io/CondFoleyGen/)]
+
+## Code coming soon...
