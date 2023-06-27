@@ -1,0 +1,109 @@
+action: 'train_audio_feature_extractor'
+
+model: 'resnet18'
+
+training:
+  batch_size: 16
+  run_test_only: False
+  device: 'cuda:0'
+  num_workers: 10
+  weight_decay: 0
+  num_epochs: 100
+  num_classes: 308
+  patience: 10
+  cls_weights_in_loss: False
+  resume: False
+  finetune: False
+  seed: 1337
+  learning_rate: 3e-4
+  dist_backend: 'nccl'
+  optimizer:
+    name: adam
+    betas: [0.9, 0.999]
+    momentum: 0.9
+    weight_decay: 0
+  use_half_precision: True
+  lr_scheduler:
+    name: 'constant'  # 'constant' 'constant_with_warmup'
+    warmup: 1000 # iterations to recover from base_learning_rate / 100
+
+data:
+  vids_dir: 'PLACEHOLDER'
+  to_filter_bad_examples: True
+  max_duration_sec: 10
+  crop_len_sec: 5 # 8 5 7
+  n_fft: 512
+  hop_length: 128  # n_fft // 4
+  p_audio_aug: 0.2
+
+# sequentially defined
+transform_sequence_train:
+  - target: dataset.transforms.AudioTrimOrTileToDuration
+    params:
+      duration_sec: ${data.max_duration_sec}
+  - target: dataset.transforms.AudioTimeCrop
+    params:
+      crop_len_sec: ${data.crop_len_sec}
+      is_random: True
+  - target: dataset.transforms.AudioRandomReverb
+    params:
+      p: ${data.p_audio_aug}
+  - target: dataset.transforms.AudioRandomVolume
+    params:
+      p: ${data.p_audio_aug}
+      gain: 2.0
+      gain_type: 'amplitude'
+  - target: dataset.transforms.AudioRandomPitchShift
+    params:
+      p: ${data.p_audio_aug}
+      shift: 1000
+  - target: dataset.transforms.AudioRandomLowpassFilter
+    params:
+      p: ${data.p_audio_aug}
+      cutoff_freq: 100
+  - target: dataset.transforms.AudioRandomGaussNoise
+    params:
+      p: ${data.p_audio_aug}
+      amplitude: 0.01
+  - target: dataset.transforms.AudioSpectrogram
+    params:
+      n_fft: ${data.n_fft}
+      hop_length: ${data.hop_length}
+  - target: dataset.transforms.AudioLog
+  - target: dataset.transforms.AudioRandomFreqMask
+    params:
+      p: ${data.p_audio_aug}
+      freq_mask_param: 64
+  - target: dataset.transforms.AudioRandomTimeMask
+    params:
+      p: ${data.p_audio_aug}
+      time_mask_param: 200
+  - target: dataset.transforms.AudioStandardNormalize
+  - target: dataset.transforms.AudioUnsqueezeChannelDim
+    params:
+      dim: 0
+
+transform_sequence_test:
+  - target: dataset.transforms.AudioTrimOrTileToDuration
+    params:
+      duration_sec: ${data.max_duration_sec}
+  - target: dataset.transforms.AudioTimeCrop
+    params:
+      crop_len_sec: ${data.crop_len_sec}
+      is_random: False
+  - target: dataset.transforms.AudioSpectrogram
+    params:
+      n_fft: ${data.n_fft}
+      hop_length: ${data.hop_length}
+  - target: dataset.transforms.AudioLog
+  - target: dataset.transforms.AudioStandardNormalize
+  - target: dataset.transforms.AudioUnsqueezeChannelDim
+    params:
+      dim: 0
+
+logging:
+  logdir: './logs/feature_extractors'
+  # patterns to ignore when backing up the code folder
+  patterns_to_ignore: ['logs', '.git', '__pycache__', 'data', 'checkpoints', '*.pt', 'sbatch_logs', '*.mp4', '*.wav', '*.jpg']
+  use_wandb: True
+  log_code_state: True

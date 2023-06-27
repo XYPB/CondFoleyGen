@@ -1,0 +1,100 @@
+model:
+  base_learning_rate: 5e-6
+  target: specvqgan.models.av_cond_transformer.Net2NetTransformerAVCond
+  params:
+    cond_stage_key: feature
+    clip: 50
+    p_audio_aug: 0.5
+    transformer_config:
+      target: specvqgan.modules.transformer.mingpt.GPTFeats
+      params:
+        feat_embedding_config:
+          target: torch.nn.Conv1d # conv is used for convenience of applying the same FC at each position (kernel_size=1, padding=0) – donot change these params
+          params:
+            in_channels: 512  # feat_depth
+            out_channels: 1024  # n_embd
+            kernel_size: 1
+            padding: 0
+        GPT_config:
+          vocab_size: 1024
+          block_size: 160  # clip * 2 + how many frames (1)
+          n_layer: 24
+          n_head: 16
+          n_embd: 1024
+    first_stage_permuter_config:
+      target: specvqgan.modules.transformer.permuter.ColumnMajor
+      params:
+        H: 5  # mel_num, num of feats in specs / down_factor
+        W: 10  # cropped spec length / down_factor
+    first_stage_config:
+      target: specvqgan.models.vqgan.VQModel
+      params:
+        ckpt_path: <fill this with path to VQ-GAN model> # eg. 'logs/2022-08-22T21-45-03_countixAV_codebook_denoise/checkpoints/epoch=003199.ckpt'
+        embed_dim: 256
+        n_embed: 1024
+        L: 2.0
+        ddconfig:
+          double_z: false
+          z_channels: 256
+          resolution: 160
+          in_channels: 1
+          out_ch: 1
+          ch: 128
+          ch_mult: [1, 1, 2, 2, 4]
+          num_res_blocks: 2
+          attn_resolutions: [10]
+          dropout: 0.0
+        lossconfig:
+          target: specvqgan.modules.losses.DummyLoss
+    # no permuter for the cond stage as the raw features is already a sequence
+    cond_stage_config:
+      target: specvqgan.modules.video_model.r2plus1d_18.r2plus1d18KeepTemp
+
+lightning:
+  modelcheckpoint:
+    target: pytorch_lightning.callbacks.ModelCheckpoint
+    params:
+      monitor: val/loss
+      mode: min
+      save_last: True
+      save_top_k: 3
+  callbacks:
+    image_logger:
+      target: train.ImageLogger
+      params:
+        epoch_frequency: 50
+        for_specs: True
+        vocoder_cfg:
+          target: train.VocoderMelGan
+          params:
+            ckpt_vocoder: './vocoder/logs/vggsound/'
+  trainer:
+    max_epochs: 1000
+
+
+data:
+  target: train.ImpactSetWaveCondOnImageModuleFromConfig
+  params:
+    batch_size: 8
+    num_workers: 16
+
+    splits_path: './data'
+    data_path: 'data/ImpactSet/impactset-proccess-resize'
+    L: 2.0
+    sample_rate: 22050
+    denoise: True
+    p_outside_cond: 0.
+
+
+    train:
+      target: specvqgan.data.impactset.ImpactSetWaveCondOnImageTrain
+      params:
+        dataset_cfg:
+    validation:
+      target: specvqgan.data.impactset.ImpactSetWaveCondOnImageValidation
+      params:
+        dataset_cfg:
+    test:
+      target: specvqgan.data.impactset.ImpactSetWaveCondOnImageTest
+      params:
+        dataset_cfg:

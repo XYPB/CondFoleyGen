@@ -1,0 +1,25 @@
+seed: 1337
+log_code_state: True
+patterns_to_ignore: ['logs', '.git', '__pycache__']
+
+mels_path: '/home/duyxxd/SpecVQGAN/data/greatesthit/melspec_10s_22050hz'
+batch_size: 32
+num_workers: 8
+device: 'cuda:0'
+conv_layers: [64, 64, 'MP', 128, 128, 'MP', 256, 256, 256, 'MP', 512, 512, 512, 'MP', 512, 512, 512]
+use_bn: False
+optimizer: adam
+learning_rate: 1e-4
+betas: [0.9, 0.999]
+cropped_size: [80, 160]
+momentum: 0.9
+weight_decay: 1e-4
+cls_weights_in_loss: False
+num_epochs: 20
+patience: 20
+logdir: '/home/duyxxd/SpecVQGAN/logs'
+exp_name: 'action'
+action_only: True
+material_only: False
+
+load_model: /home/duyxxd/SpecVQGAN/logs/vggishish16.pt
