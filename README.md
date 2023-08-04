@@ -81,6 +81,7 @@ path/to/CondFoleyGen/
                     meta.json
                 ...
 ```
+The `meta.json` and `hit_record.json` files can be found at `data/greatest_hit_meta_info.tar.gz`, which contains all the necessary information in the correct structure. In fact, you may only use them when you train the GreatestHit model with spectrograms, which is deprecated. The current training scheme only uses the `.wav` audio file.
 
 #### Countix-AV
 Similarly, the Countix-AV dataset should be placed under the `data/` folder following such structure:
