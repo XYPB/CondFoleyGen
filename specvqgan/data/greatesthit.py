@@ -669,7 +669,7 @@ class CondGreatestHitWaveCondOnImage(torch.utils.data.Dataset):
         # target
         wave_path = self.video_audio_path[video]
         frames = [Image.open(os.path.join(
-            frame_path, f'frame{i+1:0>6d}_resize.jpg')).convert('RGB') for i in
+            frame_path, f'frame{i+1:0>6d}')).convert('RGB') for i in
             range(start_frame_idx, end_frame_idx)]
         wav, sr = soundfile.read(wave_path, frames=int(SR * self.L), start=start_idx)
         assert sr == SR
@@ -705,7 +705,7 @@ class CondGreatestHitWaveCondOnImage(torch.utils.data.Dataset):
         cond_end_frame_idx = non_negative(cond_start_frame_idx + FPS * self.L)
 
         cond_frames = [Image.open(os.path.join(
-                cond_frame_path, f'frame{i+1:0>6d}_resize.jpg')).convert('RGB') for i in 
+                cond_frame_path, f'frame{i+1:0>6d}')).convert('RGB') for i in 
                 range(cond_start_frame_idx, cond_end_frame_idx)]
         cond_wav, _ = soundfile.read(cond_wave_path, frames=int(SR * self.L), start=cond_start_idx)
         cond_wav = self.wav_transforms(cond_wav)
@@ -880,7 +880,7 @@ class GreatestHitWaveCondOnImage(torch.utils.data.Dataset):
         # target
         wave_path = self.video_audio_path[video]
         frames = [Image.open(os.path.join(
-            frame_path, f'frame{i+1:0>6d}_resize.jpg')).convert('RGB') for i in
+            frame_path, f'frame{i+1:0>6d}')).convert('RGB') for i in
             range(start_frame_idx, end_frame_idx)]
         wav, sr = soundfile.read(wave_path, frames=int(SR * self.L), start=start_idx)
         assert sr == SR

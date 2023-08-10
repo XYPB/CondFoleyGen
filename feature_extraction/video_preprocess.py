@@ -12,7 +12,7 @@ def execCmd(cmd):
     r.close()
     return text
 
-def pipeline(video_path, output_dir, fps='15', sr='22050', W='320', H='240', denoise=False):
+def pipeline(video_path, output_dir, fps='15', sr='22050', W='640', H='360', denoise=False, greatesthit=False):
     video_name = os.path.basename(video_path)
     audio_name = video_name.replace(".mp4", ".wav")
 
@@ -39,8 +39,6 @@ def pipeline(video_path, output_dir, fps='15', sr='22050', W='320', H='240', den
 
     frame_dest = os.path.join(frame_output_dir, 'frame%06d.jpg')
     os.system(f'ffmpeg -i {video_path} -loglevel error -filter:v fps=fps={fps} -y {frame_dest}')
-    frame_dest = os.path.join(frame_output_dir, 'frame%06d_resize.jpg')
-    os.system(f'ffmpeg -i {video_path} -loglevel error -filter:v fps=fps={fps},scale={W}:{H} -y {frame_dest}')
 
 if __name__ == '__main__':
     paser = argparse.ArgumentParser()
@@ -52,6 +50,7 @@ if __name__ == '__main__':
     paser.add_argument('--video_height', default='240')
     paser.add_argument("-n", '--num_worker', type=int, default=8)
     paser.add_argument("--denoise", action='store_true', default=False)
+    paser.add_argument("--greatesthit", action='store_true', default=False)
     args = paser.parse_args()
 
     input_dir = args.input_dir
@@ -62,9 +61,12 @@ if __name__ == '__main__':
     H = args.video_height
     denoise = args.denoise
 
-    video_paths = glob(os.path.join(input_dir, "*/*.mp4"))
+    if args.greatesthit:
+        video_paths = glob(os.path.join(input_dir, "*_denoised.mp4"))
+    else:
+        video_paths = glob(os.path.join(input_dir, "*/*.mp4"))
     video_paths.sort()
 
     with Pool(args.num_worker) as p:
-        p.map(partial(pipeline, output_dir=output_dir, sr=sr, fps=fps, W=W, H=H, denosie=denoise), video_paths)
+        p.map(partial(pipeline, output_dir=output_dir, sr=sr, fps=fps, W=W, H=H, denosie=denoise, greatesthit=args.greatesthit), video_paths)
 
