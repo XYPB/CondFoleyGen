@@ -55,8 +55,7 @@ We use the Countix-AV dataset to demonstrate our method on a more realistic scen
 
 As described in the paper, we resampled the videos into 15FPS and resampled the audio into 22050Hz. The video is also resized to `(640, 360)` for faster loading. The audio is denoised with [noisereduce](https://github.com/timsainb/noisereduce) package.
 
-~~Please see the `video_preprocess.py` for more details~~
-FOr training preprocess, please use `feature_extraction\video_preprocess.py`, which will build correct training data structure. See the file for more detail. Also, you may need to change `feature_extraction\video_preprocess.py:L63` to adapt correct input video for the Greatest Hits dataset. This script will also process the videos into separated audio and frames to speed up the training.
+FOr training preprocess, please use `feature_extraction\video_preprocess.py`, which will build correct training data structure. See the file for more detail. We have also updated the script so that you can use `--greatesthit` flag to process data for the Greatest Hits dataset and ignore this flag for the CountixAV dataset.
 
 For evaluation & demonstration purpose, please use `video_preprocess.py`.
 
@@ -72,8 +71,8 @@ path/to/CondFoleyGen/
             greatesthit-process-resized/
                 {video_idx}/
                     audio/
-                        {videoIdx}.wav
                         {videoIdx}_denoised.wav
+                        {videoIdx}_denoised_resampled.wav
                     frames/
                         frame000001.jpg
                         frame000002.jpg
