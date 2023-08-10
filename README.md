@@ -55,7 +55,7 @@ We use the Countix-AV dataset to demonstrate our method on a more realistic scen
 
 As described in the paper, we resampled the videos into 15FPS and resampled the audio into 22050Hz. The video is also resized to `(640, 360)` for faster loading. The audio is denoised with [noisereduce](https://github.com/timsainb/noisereduce) package.
 
-FOr training preprocess, please use `feature_extraction\video_preprocess.py`, which will build correct training data structure. See the file for more detail. We have also updated the script so that you can use `--greatesthit` flag to process data for the Greatest Hits dataset and ignore this flag for the CountixAV dataset.
+FOr training preprocess, please use `feature_extraction\video_preprocess.py`, which will build correct training data structure. See the file for more detail. We have also updated the script so that you can use `--greatesthit` flag to process data for the Greatest Hits dataset and ignore this flag for the CountixAV dataset. **Note that there is no need for further denoise for the Greatest Hits dataset**.
 
 For evaluation & demonstration purpose, please use `video_preprocess.py`.
 
