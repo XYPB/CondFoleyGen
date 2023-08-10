@@ -38,7 +38,7 @@ def pipeline(video_path, output_dir, fps='15', sr='22050', W='640', H='360', den
         sf.write(dest, wav_clean, samplerate=sr)
 
     frame_dest = os.path.join(frame_output_dir, 'frame%06d.jpg')
-    os.system(f'ffmpeg -i {video_path} -loglevel error -filter:v fps=fps={fps} -y {frame_dest}')
+    os.system(f'ffmpeg -i {video_path} -loglevel error -filter:v fps=fps={fps},scale={W}:{H} -y {frame_dest}')
 
 if __name__ == '__main__':
     paser = argparse.ArgumentParser()
