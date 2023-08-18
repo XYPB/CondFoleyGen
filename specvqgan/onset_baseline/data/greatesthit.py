@@ -33,11 +33,11 @@ class GreatestHitDataset(object):
     def __init__(self, args, split='train'):
         self.split = split
         if split == 'train':
-            list_sample = '/home/duyxxd/SpecVQGAN/data/greatesthit_train_2.00.json'
+            list_sample = './data/greatesthit_train_2.00.json'
         elif split == 'val':
-            list_sample = '/home/duyxxd/SpecVQGAN/data/greatesthit_valid_2.00.json'
+            list_sample = './data/greatesthit_valid_2.00.json'
         elif split == 'test':
-            list_sample = '/home/duyxxd/SpecVQGAN/data/greatesthit_test_2.00.json'
+            list_sample = './data/greatesthit_test_2.00.json'
 
         # save args parameter
         self.repeat = args.repeat if split == 'train' else 1
@@ -67,13 +67,15 @@ class GreatestHitDataset(object):
     def __getitem__(self, index):
         # import pdb; pdb.set_trace()
         info = self.list_sample[index].split('_')[0]
-        video_path = os.path.join('data', 'Greatest-hits', 'ProcessedData', info)
+        video_path = os.path.join('data', 'greatesthit', 'greatesthit_processed', info)
         frame_path = os.path.join(video_path, 'frames')
         audio_path = os.path.join(video_path, 'audio')
         audio_path = glob.glob(f"{audio_path}/*.wav")[0]
+        # Unused, consider remove
         meta_path = os.path.join(video_path, 'hit_record.json')
-        with open(meta_path, "r") as f:
-            meta_dict = json.load(f)
+        if os.path.exists(meta_path):
+            with open(meta_path, "r") as f:
+                meta_dict = json.load(f)
 
         audio, audio_sample_rate = sf.read(audio_path, start=0, stop=1000, dtype='float64', always_2d=True)
         frame_rate = 15

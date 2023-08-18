@@ -33,11 +33,11 @@ class CountixAVDataset(object):
     def __init__(self, args, split='train'):
         self.split = split
         if split == 'train':
-            list_sample = '/home/duyxxd/SpecVQGAN/data/countixAV_train.json'
+            list_sample = './data/countixAV_train.json'
         elif split == 'val':
-            list_sample = '/home/duyxxd/SpecVQGAN/data/countixAV_val.json'
+            list_sample = './data/countixAV_val.json'
         elif split == 'test':
-            list_sample = '/home/duyxxd/SpecVQGAN/data/countixAV_test.json'
+            list_sample = './data/countixAV_test.json'
 
         # save args parameter
         self.repeat = args.repeat if split == 'train' else 1

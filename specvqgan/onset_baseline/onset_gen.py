@@ -130,8 +130,8 @@ def generate_audio(con_videoclip, video_onsets):
     return gen_audio
 
 
-def generate_video(net, original_video_list, cond_video_lists):
-    save_folder = 'results/onset_baseline_cxav/vis4'
+def generate_video(net, original_video_list, cond_video_list_0, cond_video_list_1, cond_video_list_2):
+    save_folder = 'results/onset_baseline/vis'
     os.makedirs(save_folder, exist_ok=True)
     origin_video_folder = os.path.join(save_folder, '0_original')
     os.makedirs(origin_video_folder, exist_ok=True)
@@ -139,7 +139,7 @@ def generate_video(net, original_video_list, cond_video_lists):
     for i in range(len(original_video_list)):
         # import pdb; pdb.set_trace()
         shutil.copy(original_video_list[i], os.path.join(
-            origin_video_folder, cond_video_lists[0][i].split('/')[-1]))
+            origin_video_folder, original_video_list[i].split('/')[-1]))
         
         ori_videoclip = VideoFileClip(original_video_list[i])
 
@@ -152,8 +152,7 @@ def generate_video(net, original_video_list, cond_video_lists):
         video_onsets = postprocess_video_onsets(pred, thres=0.5, nearest=4)
         video_onsets = (video_onsets / 15 * 22050).astype(int)
 
-        for ind, cond_idx in enumerate(range(len(cond_video_lists))):
-            cond_video = cond_video_lists[cond_idx][i]
+        for ind, cond_video in enumerate([cond_video_list_0[i], cond_video_list_1[i], cond_video_list_2[i]]):
             cond_video_folder = os.path.join(save_folder, f'{ind * 2 + 1}_conditional_{ind}')
             os.makedirs(cond_video_folder, exist_ok=True)
             shutil.copy(cond_video, os.path.join(
@@ -166,23 +165,25 @@ def generate_video(net, original_video_list, cond_video_lists):
             gen_videoclip = ori_videoclip.set_audio(gen_audioclip)
             save_gen_folder = os.path.join(save_folder, f'{ind * 2 + 2}_generate_{ind}')
             os.makedirs(save_gen_folder, exist_ok=True)
-            gen_videoclip.write_videofile(os.path.join(save_gen_folder, cond_video.split('/')[-1]))
+            gen_videoclip.write_videofile(os.path.join(save_gen_folder, original_video_list[i].split('/')[-1]))
 
 
 
 if __name__ == '__main__': 
     net = models.VideoOnsetNet(pretrained=False).to(device)
-    resume = 'checkpoints/cxav_train/checkpoint_ep100.pth.tar'
+    resume = 'checkpoints/EXP1/checkpoint_ep100.pth.tar'
     net, _ = torch_utils.load_model(resume, net, device=device, strict=True)
-    # read_folder = 'CondAVTransformer_VNet_CXAV_2s_denoise_AST_predicted_75_percent_samecls'
-    # read_folder = 'CondAVTransformer_VNet_CXAV_2s_denoise_onset_samecls_selected'
+    read_folder = '' # name to a directory that generated with `audio_generation.py` 
+    original_video_list = glob.glob(f'{read_folder}/2sec_full_orig_video/*.mp4')
+    original_video_list.sort()
 
-    # cond_video_list_0 = glob.glob(f'{read_folder}/2sec_full_cond_video_0/*.mp4')
-    # cond_video_list_0.sort()
-    # original_video_list = ['_to_'.join(v.replace('2sec_full_cond_video_0', '2sec_full_orig_video').split('_to_')[:2])+'.mp4' for v in cond_video_list_0]
-    # assert len(original_video_list) == len(cond_video_list_0)
-    original_video_list = ['/home/duyxxd/SpecVQGAN/logs/todraw5/1_ylc/AdobeStock_93378558_trim_to_2s_from_1.5000.mp4', '/home/duyxxd/SpecVQGAN/logs/todraw5/4_ylc/button_new_fps_trim_to_2s_from_1.5000.mp4']
-    cond_video_list_0 = ['/home/duyxxd/SpecVQGAN/logs/todraw5/1_ylc/cond/AdobeStock_93378558_trim_to_2s_from_1.5000_to_AdobeStock_99378579_trim_to_2s_from_2.0000.mp4', '/home/duyxxd/SpecVQGAN/logs/todraw5/4_ylc/cond/button_new_fps_trim_to_2s_from_1.5000_to_AdobeStock_536371955_trim_to_2s_from_2.0000.mp4']
-    cond_video_list_1 = ['/home/duyxxd/SpecVQGAN/logs/todraw5/1_ylc/cond/AdobeStock_93378558_Video_HD_Preview_new_fps_trim_to_2s_from_1.5000_to_6d1YS7fdBK4_0007_0019_new_fps_trim_to_2s_from_2.0000.mp4', '/home/duyxxd/SpecVQGAN/logs/todraw5/4_ylc/cond/button_new_fps_trim_to_2s_from_1.5000_to_SExIpBIBj_k_0009_0019_new_fps_trim_to_2s_from_2.0000.mp4']
+    cond_video_list_0 = glob.glob(f'{read_folder}/2sec_full_cond_video_0/*.mp4')
+    cond_video_list_0.sort()
 
-    generate_video(net, original_video_list, [cond_video_list_0,cond_video_list_1])
+    cond_video_list_1 = glob.glob(f'{read_folder}/2sec_full_cond_video_1/*.mp4')
+    cond_video_list_1.sort()
+
+    cond_video_list_2 = glob.glob(f'{read_folder}/2sec_full_cond_video_2/*.mp4')
+    cond_video_list_2.sort()
+
+    generate_video(net, original_video_list, cond_video_list_0, cond_video_list_1, cond_video_list_2)
