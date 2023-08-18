@@ -15,6 +15,8 @@ This is the official PyTorch implementation of "Conditional Generation of Audio 
   <img width="100%" alt="CondFoleyGen Teaser Figure" src="images/teaser.png">
 </div>
 
+[TOC]
+
 ## Environment
 
 To setup the environment, please run
@@ -191,6 +193,41 @@ conda activate sparse_sync
 python predict_best_sync.py -d 0 --dest_dir <path_to_generated_file> --tolerance 0.2 --split <split> --cnt <gen_cnt>
 ```
 The output will be at the `SparseSync/logs/<path_to_generated_file>` folder, under the same folder of previous generated output.
+
+
+## Onset Transfer Baseline
+
+As one another simple yet impressive baseline we proposed in this paper, we provide the full set of the train&test code for the onset transfer baseline. All the related files can be find in the `specvqgan/onset_baseline/`. More details about this baseline can be found in the paper appendix section A.4.
+
+### Data
+
+This baseline uses the same data as the CondFoleyGen model, you just need to create a soft symbolic link of `./data` directory under the `specvqgan/onset_baseline/` directory like this:
+```bash
+ln -s ./data ./specvqgan/onset_baseline/
+```
+The dataloader will automatically load data from the directory with the same pre-processed method.
+
+### Train & Test
+
+The train and test script is all at the `specvqgan/onset_baseline/main.py` and `specvqgan/onset_baseline/main_cxav.py`. Both model uses the same model and training settings, but just different dataloader. You may train these two model with following command:
+```bash
+cd ./specvqgan/onset_baseline/
+# Greatest Hits
+CUDA_VISIBLE_DEVICES=1 python main.py --exp='EXP1' --epochs=100 --batch_size=12 --num_workers=8 --save_step=10 --valid_step=1 --lr=0.0001 --optim='Adam' --repeat=1 --schedule='cos'
+# Countix-AV
+CUDA_VISIBLE_DEVICES=1 python main.py --exp='EXP1' --epochs=100 --batch_size=12 --num_workers=8 --save_step=10 --valid_step=1 --lr=0.0001 --optim='Adam' --repeat=1 --schedule='cos'
+```
+
+And the trained model will locate at `./specvqgan/onset_baseline/checkpoints` folder. During test time, please add `--test_mode` flag and use `--resume` flag to indicate the model to be used. 
+
+### Generate video with sound with Onset baseline
+To generate videos with sound with this baseline model. Please use the `specvqgan/onset_baseline/onset_gen.py` and `specvqgan/onset_baseline/onset_gen_cxav.py` script. 
+
+Please change the `resume` element in these two script to indicate the model to be used, and change the `read_folder` element to indicate a directory that generated with `audio_generation.py`. 
+
+If you don't want to first generate video with sound with CondFoleyGen model first, you may also modify these parts (LL176-187 in `specvqgan/onset_baseline/onset_gen.py` and L177-182 in `specvqgan/onset_baseline/onset_gen_cxav.py`) to load your own video and audio.
+
+Note that the videos to be used for generation need to contain sound (to copy-and-paste) and locate under the `specvqgan/onset_baseline/` folder.
 
 ## Citation
 
