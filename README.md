@@ -203,7 +203,7 @@ This baseline uses the same data as the CondFoleyGen model, you just need to cre
 ```bash
 ln -s ./data ./specvqgan/onset_baseline/
 ```
-The dataloader will automatically load data from the directory with the same pre-processed method.
+The dataloader will automatically load data from the directory with the same pre-processing.
 
 ### Train & Test
 
@@ -211,9 +211,9 @@ The train and test script is all at the `specvqgan/onset_baseline/main.py` and `
 ```bash
 cd ./specvqgan/onset_baseline/
 # Greatest Hits
-CUDA_VISIBLE_DEVICES=1 python main.py --exp='EXP1' --epochs=100 --batch_size=12 --num_workers=8 --save_step=10 --valid_step=1 --lr=0.0001 --optim='Adam' --repeat=1 --schedule='cos'
+CUDA_VISIBLE_DEVICES=0 python main.py --exp='EXP1' --epochs=100 --batch_size=12 --num_workers=8 --save_step=10 --valid_step=1 --lr=0.0001 --optim='Adam' --repeat=1 --schedule='cos'
 # Countix-AV
-CUDA_VISIBLE_DEVICES=1 python main.py --exp='EXP1' --epochs=100 --batch_size=12 --num_workers=8 --save_step=10 --valid_step=1 --lr=0.0001 --optim='Adam' --repeat=1 --schedule='cos'
+CUDA_VISIBLE_DEVICES=0 python main.py --exp='EXP1' --epochs=100 --batch_size=12 --num_workers=8 --save_step=10 --valid_step=1 --lr=0.0001 --optim='Adam' --repeat=1 --schedule='cos'
 ```
 
 And the trained model will locate at `./specvqgan/onset_baseline/checkpoints` folder. During test time, please add `--test_mode` flag and use `--resume` flag to indicate the model to be used. 
