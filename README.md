@@ -15,8 +15,6 @@ This is the official PyTorch implementation of "Conditional Generation of Audio 
   <img width="100%" alt="CondFoleyGen Teaser Figure" src="images/teaser.png">
 </div>
 
-[TOC]
-
 ## Environment
 
 To setup the environment, please run
