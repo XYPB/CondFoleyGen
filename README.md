@@ -223,7 +223,7 @@ To generate videos with sound with this baseline model. Please use the `specvqga
 
 Please change the `resume` element in these two script to indicate the model to be used, and change the `read_folder` element to indicate a directory that generated with `audio_generation.py`. 
 
-If you don't want to first generate video with sound with CondFoleyGen model first, you may also modify these parts (LL176-187 in `specvqgan/onset_baseline/onset_gen.py` and L177-182 in `specvqgan/onset_baseline/onset_gen_cxav.py`) to load your own video and audio.
+If you don't want to first generate video with sound with CondFoleyGen model first, you may also modify these parts ([L176-187](https://github.com/XYPB/CondFoleyGen/blob/9101ed30e08437c02791b9d98777d7d3fcb4a1a0/specvqgan/onset_baseline/onset_gen.py#L176-L187) in `specvqgan/onset_baseline/onset_gen.py` and [L177-182](https://github.com/XYPB/CondFoleyGen/blob/9101ed30e08437c02791b9d98777d7d3fcb4a1a0/specvqgan/onset_baseline/onset_gen_cxav.py#L177-L182) in `specvqgan/onset_baseline/onset_gen_cxav.py`) to load your own video and audio.
 
 Note that the videos to be used for generation need to contain sound (to copy-and-paste) and locate under the `specvqgan/onset_baseline/` folder.
 
