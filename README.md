@@ -15,6 +15,10 @@ This is the official PyTorch implementation of "Conditional Generation of Audio 
   <img width="100%" alt="CondFoleyGen Teaser Figure" src="images/teaser.png">
 </div>
 
+## News
+
+**We have uploaded the pre-trained model vis google drive, feel free to have a try now!**
+
 ## Environment
 
 To setup the environment, please run
@@ -32,7 +36,7 @@ conda activate sparse_sync
 
 ## Demo
 
-A quick demonstrate to generate 6-sec audio with our model is to simply run
+A quick demonstration to generate 6-sec audio with our model is to simply run
 ```bash
 mkdir logs
 python audio_generation.py --gh_demo --model_name 2022-05-03T11-33-05_greatesthit_transformer_with_vNet_randshift_2s_GH_vqgan_no_earlystop --target_log_dir demo_output --W_scale 3
@@ -45,19 +49,19 @@ You may check the `audio_generation.py` to change the input videos and play with
 
 ### Greatest Hits
 
-We use the Greatestest Hits dataset to train and evaluate our model both qualitatively and quantitatively. Data can be downloaded from [here](https://andrewowens.com/vis/).
+We use the Greatest Hits dataset to train and evaluate our model both qualitatively and quantitatively. Data can be downloaded from [here](https://andrewowens.com/vis/).
 
 ### Countix-AV
 
-We use the Countix-AV dataset to demonstrate our method on a more realistic scenario. Data can be downloaded following the configs from [RepetitionCounting](https://github.com/xiaobai1217/RepetitionCounting) repo.
+We use the Countix-AV dataset to demonstrate our method in a more realistic scenario. Data can be downloaded following the configs from [RepetitionCounting](https://github.com/xiaobai1217/RepetitionCounting) repo.
 
 ### Data Pre-processing
 
 As described in the paper, we resampled the videos into 15FPS and resampled the audio into 22050Hz. The video is also resized to `(640, 360)` for faster loading. The audio is denoised with [noisereduce](https://github.com/timsainb/noisereduce) package.
 
-FOr training preprocess, please use `feature_extraction\video_preprocess.py`, which will build correct training data structure. See the file for more detail. We have also updated the script so that you can use `--greatesthit` flag to process data for the Greatest Hits dataset and ignore this flag for the CountixAV dataset. **Note that there is no need for further denoise for the Greatest Hits dataset**.
+For the training preprocess, please use `feature_extraction\video_preprocess.py`, which will build the correct training data structure. See the file for more details. We have also updated the script so that you can use `--greatesthit` flag to process data for the Greatest Hits dataset and ignore this flag for the CountixAV dataset. **Note that there is no need for further denoise for the Greatest Hits dataset**.
 
-For evaluation & demonstration purpose, please use `video_preprocess.py`.
+For evaluation & demonstration purposes, please use `video_preprocess.py`.
 
 ### Data structure
 
@@ -104,11 +108,11 @@ path/to/CondFoleyGen/
 
 ### Train/Validation/Test split
 
-We split each dataset on video level randomly. The split file is under the `data/` folder, named as `data/greatesthit_[train/val/test].json` and `data/countixAV_[train/val/test].json`
+We split each dataset on the video level randomly. The split file is under the `data/` folder, named `data/greatesthit_[train/val/test].json` and `data/countixAV_[train/val/test].json`
 
-### Quantitative Evaluation on Greatest Hits
+### Quantitative Evaluation of Greatest Hits
 
-To conduct a fair evaluation on the Greatest Hit dataset, we build a fixed test set composed of 2-sec. conditional and target video pairs cropped from previous test split following the description in the paper. Please check `data/AMT_test_set.json` for the detailed information. We also provide the corresponding action information in the `data/AMT_test_set_type_dict.json` and whether if the action in two videos are match or not in `data/AMT_test_set_match_dict.json`
+To conduct a fair evaluation of the Greatest Hit dataset, we build a fixed test set composed of 2-sec. conditional and target video pairs cropped from the previous test split following the description in the paper. Please check `data/AMT_test_set.json` for the detailed information. We also provide the corresponding action information in the `data/AMT_test_set_type_dict.json` and whether the action in the two videos matches or not in `data/AMT_test_set_match_dict.json`
 
 The path of the target and conditional video is at `data/AMT_test_set_path.json`. The data should be placed under the `logs/` folder following such structure
 ```
@@ -128,7 +132,17 @@ We also provide the pre-processed videos for downloading at [google drive](https
 
 ## Pre-trained Models
 
-Coming soon...
+We release the pre-trained model on both datasets via Google Drive here.
+
+|  Dataset |   Model  |    URL   |
+|:--------:|:--------:|:--------:|
+| Greatest Hits | Codebook (old)     | [google drive](https://drive.google.com/file/d/1rYksH7uaC-xFuZUWh-4XuK-i634hKzbM/view?usp=sharing)    |
+| Greatest Hits    | Codebook (new)     | [google drive](https://drive.google.com/file/d/1W0iKu9m0JPdMKeExnzI6xZZjbHD2lZFw/view?usp=sharing)     |
+| Greatest Hits    | Transformer     | [google drive](https://drive.google.com/file/d/125nVHMXibhyNxLfbrXGwx35i7Q-dBKPg/view?usp=sharing)     |
+| Countix-AV    | Codebook (new)     | [google drive](https://drive.google.com/file/d/16ZLYL-pac5fEU1VIT71pJA77sQKjHmRk/view?usp=sharing)     |
+| Countix-AV    | Transformer     | [google drive](https://drive.google.com/file/d/1UmDGCqSp1HjH4XXVfXauyNezq724duLk/view?usp=sharing)     |
+
+The old Codebook for Greatest Hits is trained with spectrogram, rather than wave files, which does not follow our current file structure. But you may still load this model for transformer training and inference. We also provide the new Codebook model that trained with correct wave file and the same training configuration.
 
 ## Train
 
@@ -151,29 +165,29 @@ python train.py --base configs/countixAV_codebook_denoise.yaml -t True --gpus 0,
 
 The second step of the training process is to train the conditional transformer model.
 
-- To train the model on the Greatest Hit dataset, please first fill the relative path of previous trained codebook checkpoint path to the config file at `configs/greatesthit_transformer_with_vNet_randshift_2s_GH_vqgan_no_earlystop.yaml`.
+- To train the model on the Greatest Hit dataset, please first fill the relative path of the previously trained codebook checkpoint path to the config file at `configs/greatesthit_transformer_with_vNet_randshift_2s_GH_vqgan_no_earlystop.yaml`.
 The path should be put at `model.params.first_stage_config.params.ckpt_path`
 After that, you may train the transformer model by running
 ```bash
 python train.py --base configs/greatesthit_transformer_with_vNet_randshift_2s_GH_vqgan_no_earlystop.yaml -t True --gpus 0,1,2,3,
 ```
 
-- To train the model on the Countix AV dataset, please first fill the relative path of previous trained codebook checkpoint path to the config file at `configs/countixAV_transformer_denoise.yaml`, then run
+- To train the model on the Countix AV dataset, please first fill the relative path of the previously trained codebook checkpoint path to the config file at `configs/countixAV_transformer_denoise.yaml`, then run
 ```bash
 python train.py --base configs/countixAV_transformer_denoise.yaml -t True --gpus 0,1,2,3,
 ```
 
 ## Audio Generation
 
-We provide a sample script to generate audio with pre-trained model and a pair of sample video at `audio_generation.py`.
+We provide a sample script to generate audio with a pre-trained model and a pair of sample videos at `audio_generation.py`.
 
-1. To generate audio with transformer model trained on the Greatest Hit dataset
+1. To generate audio with a transformer model trained on the Greatest Hit dataset
 ```bash
 python audio_generation.py --gh_gen --model_name <pre_trained_model_folder_name> --target_log_dir <target_output_dir_name>
 ```
 you may change the `orig_videos` and `cond_videos` in the script to generate audio for different videos
 
-2. To generate audio with transformer model trained on the Countix-AV dataset
+2. To generate audio with a transformer model trained on the Countix-AV dataset
 ```bash
 python audio_generation.py --countix_av_gen --model_name <pre_trained_model_folder_name> --target_log_dir <target_output_dir_name>
 ```
@@ -182,7 +196,7 @@ python audio_generation.py --countix_av_gen --model_name <pre_trained_model_fold
 ```bash
 python audio_generation.py --gh_testset --model_name <pre_trained_model_folder_name> --target_log_dir <target_output_dir_name>
 ```
-The Greatest Hit test data should be placed following the instruction in the previous section
+The Greatest Hit test data should be placed following the instructions in the previous section
 
 4. To generate multiple audio for re-ranking, please use the `--multiple` argument. The output will be at `logs/{target_log_dir}/{gen_cnt}_times_split_{split}_wav_dict.pt`. You may then generate the re-ranking output by running
 ```bash
@@ -190,12 +204,12 @@ cd SparseSync
 conda activate sparse_sync
 python predict_best_sync.py -d 0 --dest_dir <path_to_generated_file> --tolerance 0.2 --split <split> --cnt <gen_cnt>
 ```
-The output will be at the `SparseSync/logs/<path_to_generated_file>` folder, under the same folder of previous generated output.
+The output will be in the `SparseSync/logs/<path_to_generated_file>` folder, under the same folder of previously generated output.
 
 
 ## Onset Transfer Baseline
 
-As one another simple yet impressive baseline we proposed in this paper, we provide the full set of the train&test code for the onset transfer baseline. All the related files can be find in the `specvqgan/onset_baseline/`. More details about this baseline can be found in the paper appendix section A.4.
+As one another simple yet impressive baseline we proposed in this paper, we provide the full set of the train and test code for the onset transfer baseline. All the related files can be found in the `specvqgan/onset_baseline/`. More details about this baseline can be found in the paper appendix section A.4.
 
 ### Data
 
@@ -207,7 +221,7 @@ The dataloader will automatically load data from the directory with the same pre
 
 ### Train & Test
 
-The train and test script is all at the `specvqgan/onset_baseline/main.py` and `specvqgan/onset_baseline/main_cxav.py`. Both model uses the same model and training settings, but just different dataloader. You may train these two model with following command:
+The train and test script are all at the `specvqgan/onset_baseline/main.py` and `specvqgan/onset_baseline/main_cxav.py`. Both models uses the same model and training settings, but just different dataloaders. You may train these two models with following command:
 ```bash
 cd ./specvqgan/onset_baseline/
 # Greatest Hits
@@ -216,16 +230,16 @@ CUDA_VISIBLE_DEVICES=0 python main.py --exp='EXP1' --epochs=100 --batch_size=12 
 CUDA_VISIBLE_DEVICES=0 python main.py --exp='EXP1' --epochs=100 --batch_size=12 --num_workers=8 --save_step=10 --valid_step=1 --lr=0.0001 --optim='Adam' --repeat=1 --schedule='cos'
 ```
 
-And the trained model will locate at `./specvqgan/onset_baseline/checkpoints` folder. During test time, please add `--test_mode` flag and use `--resume` flag to indicate the model to be used. 
+And the trained model will locate in `./specvqgan/onset_baseline/checkpoints` folder. During test time, please add `--test_mode` flag and use `--resume` flag to indicate the model to be used. 
 
 ### Generate video with sound with Onset baseline
 To generate videos with sound with this baseline model. Please use the `specvqgan/onset_baseline/onset_gen.py` and `specvqgan/onset_baseline/onset_gen_cxav.py` script. 
 
-Please change the `resume` element in these two script to indicate the model to be used, and change the `read_folder` element to indicate a directory that generated with `audio_generation.py`. 
+Please change the `resume` element in these two scripts to indicate the model to be used, and change the `read_folder` element to indicate a directory that is generated with `audio_generation.py`. 
 
-If you don't want to first generate video with sound with CondFoleyGen model first, you may also modify these parts ([L176-187](https://github.com/XYPB/CondFoleyGen/blob/9101ed30e08437c02791b9d98777d7d3fcb4a1a0/specvqgan/onset_baseline/onset_gen.py#L176-L187) in `specvqgan/onset_baseline/onset_gen.py` and [L177-182](https://github.com/XYPB/CondFoleyGen/blob/9101ed30e08437c02791b9d98777d7d3fcb4a1a0/specvqgan/onset_baseline/onset_gen_cxav.py#L177-L182) in `specvqgan/onset_baseline/onset_gen_cxav.py`) to load your own video and audio.
+If you don't want to first generate video with sound with the CondFoleyGen model first, you may also modify these parts ([L176-187](https://github.com/XYPB/CondFoleyGen/blob/9101ed30e08437c02791b9d98777d7d3fcb4a1a0/specvqgan/onset_baseline/onset_gen.py#L176-L187) in `specvqgan/onset_baseline/onset_gen.py` and [L177-182](https://github.com/XYPB/CondFoleyGen/blob/9101ed30e08437c02791b9d98777d7d3fcb4a1a0/specvqgan/onset_baseline/onset_gen_cxav.py#L177-L182) in `specvqgan/onset_baseline/onset_gen_cxav.py`) to load your own video and audio.
 
-Note that the videos to be used for generation need to contain sound (to copy-and-paste) and locate under the `specvqgan/onset_baseline/` folder.
+Note that the videos to be used for generation need to contain sound (to copy-and-paste) and be located under the `specvqgan/onset_baseline/` folder.
 
 ## Citation
 
