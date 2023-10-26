@@ -17,7 +17,9 @@ This is the official PyTorch implementation of "Conditional Generation of Audio 
 
 ## News
 
-**We have uploaded the pre-trained model vis google drive, feel free to have a try now!**
+**[Oct. 2023] We have just updated the instruction for metric evaluation**
+
+**[Sept. 2023]We have uploaded the pre-trained model vis google drive, feel free to have a try now!**
 
 ## Environment
 
@@ -240,6 +242,42 @@ Please change the `resume` element in these two scripts to indicate the model to
 If you don't want to first generate video with sound with the CondFoleyGen model first, you may also modify these parts ([L176-187](https://github.com/XYPB/CondFoleyGen/blob/9101ed30e08437c02791b9d98777d7d3fcb4a1a0/specvqgan/onset_baseline/onset_gen.py#L176-L187) in `specvqgan/onset_baseline/onset_gen.py` and [L177-182](https://github.com/XYPB/CondFoleyGen/blob/9101ed30e08437c02791b9d98777d7d3fcb4a1a0/specvqgan/onset_baseline/onset_gen_cxav.py#L177-L182) in `specvqgan/onset_baseline/onset_gen_cxav.py`) to load your own video and audio.
 
 Note that the videos to be used for generation need to contain sound (to copy-and-paste) and be located under the `specvqgan/onset_baseline/` folder.
+
+## Evaluation
+
+### Data preparation
+
+To evaluate the output model, please first download the pre-trained model and generate the audio for the test set at [google drive](https://drive.google.com/file/d/1lzsoI39Ce81sj1jge2bDUhAWZiia-mye/view?usp=sharing) following the instruction in the previous section. As an result, you should have *582* generated videos for *194* target video with *3* conditional video each in your generated folder.
+
+### Create Test folder
+
+To evaluate the model, you need to create a test folder with the `create_test_folder.py` under `./data/AMT_test/`, which match the generated videos with the target videos and condition videos. It also generate a list that indicate if the action and material type in the target and conditional video are matched or not. It will arrange the videos in the correct order to better evaluate them. To create the test folder, run
+```bash
+python create_test_folder.py <path_to_generated_dir>
+```
+The output will be placed under `./data/AMT_test/` folder with the name derived from the input generated folder name.
+
+### Onset Eval.
+
+To conduct the evaluation with respect to the Onset Acc. and Onset AP, you may run the following command:
+```bash
+python predict_onset.py --gen_dir <AMT_test_dir> 
+```
+You may use `--delta` option the control the size of detection window when calculating the AP. The default value is 0.1s.
+
+### Type Eval.
+
+To conduct the type evaluation, you need first pre-train a VGG-ishish model that predict the action/material type of the sound, the code can be found under `./specvqgan/modules/losses/train_vggishish_gh.py`, with the pre-trained model, you may predict the type of the generated audio by running
+```bash
+python ./specvqgan/modules/losses/train_vggishish_gh.py <vggishish_config> <AMT_test_dir> <model_path>
+```
+prediction will locate at `<AMT_test_dir>_<action/material>_preds.json`. The config files can be found under `./specvqgan/modules/losses/configs/`. Lastly, please move each prediction json to `./data/AMT_test/<action/material>_pred/`, where you should have the prediction for ground truth videos as well.
+
+With the predictions result, you may evaluate the performance of generation quality by running:
+```bash
+python evaluation_auto.py --task <action/material>
+```
+Please use `--match`, `--mismatch` to control whether evaluate the result when target and condition are match/mismatch.
 
 ## Citation
 

@@ -8,8 +8,9 @@ from tqdm import tqdm
 from moviepy.editor import VideoFileClip
 from feature_extraction.demo_utils import extract_melspectrogram
 
-# TEST_FOLDER = 'data/AMT_test/'
-TEST_FOLDER = 'data/AMT_test_8s/'
+TEST_FOLDER = 'data/AMT_test/'
+# Change the TEST_FOLDER to the following if you want to create test folder for 4/6/8s videos
+# TEST_FOLDER = 'data/AMT_test_8s/'
 os.makedirs(TEST_FOLDER, exist_ok=True)
 match_dict = json.load(open('data/AMT_test_set_match_dict.json', 'r'))
 
