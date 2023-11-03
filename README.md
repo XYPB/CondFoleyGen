@@ -146,6 +146,8 @@ We release the pre-trained model on both datasets via Google Drive here.
 
 The old Codebook for Greatest Hits is trained with spectrogram, rather than wave files, which does not follow our current file structure. But you may still load this model for transformer training and inference. We also provide the new Codebook model that trained with correct wave file and the same training configuration.
 
+You may also need to download the pre-trained model and the configuration for MelGAN vocoder, which can be found in [SpecVQGAN](https://github.com/v-iashin/SpecVQGAN/tree/main/vocoder/logs/vggsound). Please place the downloaded model to `./vocoder/logs/vggsound` folder.
+
 ## Train
 
 The training of our model with default configs requires 1 NVIDIA A40 40G GPU for the first stage, and 4 NVIDIA A40 40G GPUs for the second stage. You may change the `--gpus` argument to use different number of GPUS. You may also update the configurations under `config/` folder to adjust the batch size. 
