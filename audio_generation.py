@@ -64,6 +64,8 @@ parser.add_argument('--min_W_scale', type=int, default=1,
                     help='minimum W_scale to iterate')
 parser.add_argument('--gen_cnt', type=int, default=30,
                     help='generation count when generating multiple result')
+parser.add_argument('--spec_take_first', type=int, default=160,
+                    help='cut the spectrogram to this size')
 parser.add_argument('--temperature', type=float, default=1.0,
                     help='temperature of softmax for logits to probability')
 parser.add_argument('--split', type=int, default=-1,
@@ -1000,7 +1002,7 @@ if __name__ == '__main__':
                 video_path = v
                 start_sec = None
                 for j, ep in enumerate(cond_videos):
-                    gen_audio_condImage_fast(video_path, ep, model, spec_take_first=160,
+                    gen_audio_condImage_fast(video_path, ep, model, spec_take_first=args.spec_take_first,
                                             target_log_dir=target_log_dir, using_torch=True,
                                             L=2.0, cond_cnt=j, style_transfer=style_transfer,
                                             normalize=False, show_griffin_lim=False, vqgan_L=2.0)
@@ -1020,7 +1022,7 @@ if __name__ == '__main__':
                     continue
                 for j, ep in enumerate(extra_video_paths):
                     gen_audio_condImage_fast_multiple(video_path, ep, model, all_gen_dict,
-                                                    spec_take_first=160, gen_cnt=gen_cnt,
+                                                    spec_take_first=args.spec_take_first, gen_cnt=gen_cnt,
                                                     target_log_dir=target_log_dir, using_torch=True,
                                                     L=2.0, cond_cnt=j, style_transfer=style_transfer,
                                                     normalize=False, show_griffin_lim=False, vqgan_L=2.0)
@@ -1030,7 +1032,7 @@ if __name__ == '__main__':
                 video_path = v
                 start_sec = None
                 for j, ep in enumerate(extra_video_paths):
-                    gen_audio_condImage_fast(video_path, ep, model, spec_take_first=160,
+                    gen_audio_condImage_fast(video_path, ep, model, spec_take_first=args.spec_take_first,
                                             target_log_dir=target_log_dir, using_torch=True,
                                             L=2.0, cond_cnt=j, style_transfer=style_transfer,
                                             normalize=False, show_griffin_lim=False, vqgan_L=2.0,
@@ -1052,7 +1054,7 @@ if __name__ == '__main__':
                     continue
                 for j, ep in enumerate(cond_videos):
                     gen_audio_condImage_fast_multiple(video_path, ep, model, all_gen_dict,
-                                                    spec_take_first=160, gen_cnt=gen_cnt,
+                                                    spec_take_first=args.spec_take_first, gen_cnt=gen_cnt,
                                                     target_log_dir=target_log_dir, using_torch=True,
                                                     L=2.0, cond_cnt=j, style_transfer=style_transfer,
                                                     normalize=False, show_griffin_lim=False, vqgan_L=2.0)
@@ -1062,7 +1064,7 @@ if __name__ == '__main__':
                     video_path = v
                     start_sec = None
                     for j, ep in enumerate(cond_videos):
-                        gen_audio_condImage_fast(video_path, ep, model, spec_take_first=160,
+                        gen_audio_condImage_fast(video_path, ep, model, spec_take_first=args.spec_take_first,
                                                 target_log_dir=target_log_dir, using_torch=True,
                                                 L=2.0, cond_cnt=j, style_transfer=style_transfer,
                                                 normalize=False, show_griffin_lim=False, vqgan_L=2.0)

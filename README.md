@@ -41,7 +41,7 @@ conda activate sparse_sync
 A quick demonstration to generate 6-sec audio with our model is to simply run
 ```bash
 mkdir logs
-python audio_generation.py --gh_demo --model_name 2022-05-03T11-33-05_greatesthit_transformer_with_vNet_randshift_2s_GH_vqgan_no_earlystop --target_log_dir demo_output --W_scale 3
+python audio_generation.py --gh_demo --model_name 2022-05-03T11-33-05_greatesthit_transformer_with_vNet_randshift_2s_GH_vqgan_no_earlystop --target_log_dir demo_output --W_scale 3 --spec_take_first 192
 ```
 The generated video will located at `logs/demo_output/2sec_full_generated_video_0`.
 
