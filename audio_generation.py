@@ -84,6 +84,8 @@ parser.add_argument('--countix_av_gen', action='store_true',
                     help='generate audio with countix-AV model')
 parser.add_argument('--multiple', action='store_true',
                     help='generate multiple audio for each pair of input for re-ranking')
+parser.add_argument('--style_transfer', action='store_true',
+                    help='add to set this option to true')
 
 class CropImage(Crop):
     def __init__(self, *crop_args):
@@ -994,7 +996,7 @@ if __name__ == '__main__':
     if args.gh_demo:
         orig_videos = ['data/demo_video/hitting_metal.mp4']
         cond_videos = ['data/demo_video/hitting_bag.mp4']
-        for i, v in enumerate(orig_videos.items()):
+        for i, v in enumerate(orig_videos):
                 video_path = v
                 start_sec = None
                 for j, ep in enumerate(cond_videos):
