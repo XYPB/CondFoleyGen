@@ -9,7 +9,7 @@ University of Michigan, Yale University, Adobe Research
 </h4>
 
 This is the official PyTorch implementation of "Conditional Generation of Audio from Video via Foley Analogies".
-[[Project Page](https://xypb.github.io/CondFoleyGen/)] [[Arxiv](https://arxiv.org/abs/2304.08490)] [[Video](https://youtu.be/SEBf_Km8h_Q)]
+[[Project Page](https://xypb.github.io/CondFoleyGen/)] [[Arxiv](https://arxiv.org/abs/2304.08490)] [[Video](https://youtu.be/SEBf_Km8h_Q)] [[Poster](https://drive.google.com/file/d/1_2KtmfDko3zdlLBwpLfJQ0Ifog--6AU1/view?usp=sharing)]
 
 <div align="center">
   <img width="100%" alt="CondFoleyGen Teaser Figure" src="images/teaser.png">
